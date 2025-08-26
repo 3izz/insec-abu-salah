@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>أبو صلاح للاستعلامات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-strawberry: #78cc40;
+            --secondary-strawberry: #3281af;
+            --light-strawberry: #edf6ca;
+            --dark-strawberry: #71b51e;
+            --white: #FFFFFF;
+            --pink-light: #868f83;
+            --warning-orange: #23a523;
+            --warning-yellow: #060a4a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            text-align: right;
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--light-strawberry) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية الفراولة */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 142, 142, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(231, 76, 60, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* أيقونات الفراولة العائمة */
+        .strawberry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .strawberry-icon {
+            position: absolute;
+            color: rgba(255, 107, 107, 0.1);
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .strawberry-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .strawberry-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .strawberry-icon:nth-child(3) { top: 60%; left: 5%; animation-delay: 4s; }
+        .strawberry-icon:nth-child(4) { top: 70%; right: 10%; animation-delay: 1s; }
+        .strawberry-icon:nth-child(5) { top: 40%; left: 80%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.2);
+            padding: 30px;
+            margin-top: 20px;
+            border: 3px solid var(--light-strawberry);
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-strawberry), var(--secondary-strawberry));
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        h1 {
+            color: var(--dark-strawberry);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(255, 107, 107, 0.2);
+        }
+
+        h1 i {
+            color: var(--primary-strawberry);
+            margin-left: 15px;
+        }
+
+        .search-box {
+            background: linear-gradient(135deg, var(--light-strawberry) 0%, var(--pink-light) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid var(--primary-strawberry);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.15);
+        }
+
+        .form-control {
+            border: 2px solid var(--light-strawberry);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-strawberry);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+            background: var(--white);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-strawberry), var(--secondary-strawberry));
+            border: none;
+            padding: 15px 30px;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            background: linear-gradient(45deg, var(--dark-strawberry), var(--primary-strawberry));
+        }
+
+        .table {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.15);
+            border: 2px solid var(--light-strawberry);
+        }
+
+        .table-dark {
+            background: linear-gradient(90deg, var(--primary-strawberry) 0%, var(--secondary-strawberry) 100%);
+            color: var(--white);
+        }
+
+        .table th {
+            border: none;
+            padding: 18px;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(90deg, var(--primary-strawberry) 0%, var(--secondary-strawberry) 100%);
+            color: var(--white);
+        }
+
+        .table td {
+            border: 1px solid var(--light-strawberry);
+            padding: 15px;
+            text-align: center;
+            vertical-align: middle;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .table td:hover {
+            background: linear-gradient(135deg, var(--light-strawberry) 0%, var(--pink-light) 100%);
+            transform: scale(1.02);
+        }
+
+        .table-hover tbody tr:hover {
+            background: linear-gradient(135deg, var(--light-strawberry) 0%, var(--pink-light) 100%);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
+        }
+
+        mark {
+            background: linear-gradient(45deg, var(--primary-strawberry), var(--secondary-strawberry));
+            color: var(--white);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .autocomplete-items {
+            border: 2px solid var(--primary-strawberry);
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            position: absolute;
+            background-color: var(--white);
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .autocomplete-item {
+            padding: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--light-strawberry);
+            transition: all 0.3s ease;
+        }
+
+        .autocomplete-item:hover {
+            background: linear-gradient(135deg, var(--light-strawberry) 0%, var(--pink-light) 100%);
+            color: var(--dark-strawberry);
+            transform: translateX(-5px);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item.warning {
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-right: 4px solid var(--warning-orange);
+        }
+
+        .autocomplete-item.warning:hover {
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.2) 0%, rgba(255, 215, 0, 0.2) 100%);
+        }
+
+        .autocomplete-item .warning-icon {
+            color: var(--warning-orange);
+            margin-left: 8px;
+            font-size: 0.9em;
+        }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .btn-sm {
+            background: linear-gradient(45deg, var(--primary-strawberry), var(--secondary-strawberry));
+            border: none;
+            color: var(--white);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+        }
+
+        .btn-sm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.3);
+            background: linear-gradient(45deg, var(--dark-strawberry), var(--primary-strawberry));
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--dark-strawberry);
+            font-size: 1.2rem;
+        }
+
+        .spinner {
+            border: 4px solid var(--light-strawberry);
+            border-top: 4px solid var(--primary-strawberry);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* تحذير الكلمات المحددة */
+        .warning-alert {
+            background: linear-gradient(135deg, var(--warning-yellow) 0%, var(--warning-orange) 100%);
+            border: 2px solid var(--warning-orange);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.3);
+            animation: slideIn 0.5s ease-out;
+            display: none;
+        }
+
+        .warning-alert.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .warning-alert h5 {
+            color: var(--dark-strawberry);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .warning-alert p {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .warning-alert .btn-warning {
+            background: linear-gradient(45deg, var(--warning-orange), var(--warning-yellow));
+            border: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .warning-alert .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 140, 0, 0.4);
+            color: #333;
+        }
+
+        /* Modal للوصف السريع */
+        .modal-content {
+            border-radius: 20px;
+            border: 3px solid var(--primary-strawberry);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-strawberry) 0%, var(--secondary-strawberry) 100%);
+            color: var(--white);
+            border-radius: 17px 17px 0 0;
+            border-bottom: 2px solid var(--primary-strawberry);
+        }
+
+        .modal-title {
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .modal-body {
+            background: linear-gradient(135deg, var(--light-strawberry) 0%, var(--white) 100%);
+            padding: 25px;
+        }
+
+        .drug-info {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--light-strawberry);
+        }
+
+        .drug-info h6 {
+            color: var(--dark-strawberry);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .drug-description {
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--white) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            border-right: 4px solid var(--primary-strawberry);
+        }
+
+        .modal-footer {
+            background: linear-gradient(135deg, var(--light-strawberry) 0%, var(--pink-light) 100%);
+            border-radius: 0 0 17px 17px;
+            border-top: 2px solid var(--primary-strawberry);
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .table-responsive {
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفية الفراولة العائمة -->
+    <div class="strawberry-bg">
+        <i class="fas fa-seedling strawberry-icon"></i>
+        <i class="fas fa-leaf strawberry-icon"></i>
+        <i class="fas fa-seedling strawberry-icon"></i>
+        <i class="fas fa-leaf strawberry-icon"></i>
+        <i class="fas fa-seedling strawberry-icon"></i>
+    </div>
+<!-- أزرار الانتقال -->
+<div class="switch-buttons mb-3 text-center">
+    <a href="link-to-fungi.html" class="btn btn-primary me-2">
+        <i class="fas fa-spa me-1"></i> الانتقال إلى الفطريات
+    </a>
+    
+</div>
+
+    <div class="container">
+        <h1><i class="fas fa-seedling"></i>أبو صلاح للاستعلامات حشرات</h1>
+        
+        <!-- تحذير الكلمات المحددة -->
+        <div id="warningAlert" class="warning-alert">
+            <h5><i class="fas fa-exclamation-triangle me-2"></i>تحذير مهم!</h5>
+            <p>الكلمة التي تبحث عنها تحتاج إلى معلومات أكثر تفصيلاً. يرجى زيارة الموقع الرسمي للحصول على معلومات كاملة.</p>
+            <a href="https://dms.moa.gov.jo/Pesticides_Inquiry/" target="_blank" class="btn-warning">
+                <i class="fas fa-external-link-alt me-2"></i>الذهاب للموقع الرسمي
+            </a>
+        </div>
+        
+        <div class="row search-box position-relative">
+            <div class="col-md-8 mb-2">
+                <input type="text" id="searchInput" class="form-control" placeholder="ابحث بالرقم التسلسلي أو الاسم أو أي كلمة">
+                <div id="autocomplete-list" class="autocomplete-items">
+                    
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <button id="searchBtn" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-2"></i>بحث
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>رقم التسجيل</th>
+                        <th>الاسم الشائع</th>
+                        <th>الاسم التجاري</th>
+                        <th>الاسم المحلي</th>
+                        <th>المادة الفعالة</th>
+                        <th>الشركة</th>
+                        <th>تاريخ الانتهاء</th>
+                        <th>رابط PDF</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                    <tr>
+                        <td colspan="8" class="loading">
+                            <div class="spinner"></div>
+                            جاري تحميل البيانات...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal للوصف السريع -->
+    <div class="modal fade" id="drugModal" tabindex="-1" aria-labelledby="drugModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="drugModalLabel">
+                        <i class="fas fa-pills me-2"></i>معلومات الدواء
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- المحتوى سيتم إضافته ديناميكياً -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    <a href="#" id="modalPdfLink" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-file-pdf me-2"></i>فتح PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let data = [];
+
+        // جميع الكلمات المحددة (تحذير + autocomplete)
+           const allKeywords = [
+"Lufenuron","Carbosulfan","Methiocarb","Formetanate","Oxamyl","Azamethiphos",
+"Chlorpyrifos","Chlorpyrifos-methyl","Diazinon","Dichlorvos","Dimethoate",
+"Fenamiphos","Fenitrothion","Fosthiazate","Malathion","Methidathion","Phenthoate",
+"Profenofos","Propetamphos","Quinalphos","Temephos","Trichlorfon","Imicyafos",
+"Fipronil","Allethrin","Bifenthrin","Bioallethrin","Cyfluthrin","beta-Cyfluthrin",
+"Cyhalothrin","lambda-Cyhalothrin","Cypermethrin","alpha-Cypermethrin",
+"beta-Cypermethrin","zeta-Cypermethrin","Cyphenothrin [(1R)-trans- isomers]",
+"Deltamethrin","Esfenvalerate","Etofenprox","Fenpropathrin","Fenvalerate",
+"Phenothrin [(1R)-trans- isomer]","Prallethrin","Tetramethrin",
+"Tetramethrin [(1R)- isomers]","Transfluthrin","Permethrin","Acetamiprid",
+"Clothianidin","Dinotefuran","Imidacloprid","Nitenpyram","Thiacloprid",
+"Thiamethoxam","Sulfoxaflor","Spinetoram","Spinosad","Abamectin",
+"Emamectin benzoate","Milbemectin","Methoprene","Pyriproxyfen","Chloropicrin",
+"Boric acid","Dazomet","Metam","Pyrifluquinazon","Clofentezine","Hexythiazox",
+"Etoxazole","Diafenthiuron","Tetradifon","Thiocyclam","Thiosultap-sodium",
+"Diflubenzuron","Flufenoxuron","Novaluron"
+];
+
+        // الكلمات التي تحتاج تحذير خاص
+        const warningKeywords = [
+            'Cyanophos',
+            'Bifenthrin',
+            'Pyrethrins (pyrethrum)',
+            'Acetamiprid',
+            'Kinoprene',
+            'Teflubenzuron',
+             
+        ];
+
+        
+
+        // قاعدة بيانات الأوصاف السريعة
+        const drugDescriptions = {
+            'clofentezine': {
+        name: 'كلوفينتيزين',
+        type: 'مبيد أكاروسي (منظم نمو)',
+        description: 'مبيد انتقائي يؤثر على البيض واليرقات للعناكب.',
+        uses: 'مكافحة العناكب في الحمضيات والخضروات.',
+        safety: 'منخفض السمية للإنسان لكنه سام للكائنات المائية.'
+    },
+    'etoxazole': {
+        name: 'إيتوكسازول',
+        type: 'مبيد أكاروسي (منظم نمو)',
+        description: 'يوقف نمو العناكب عبر تثبيط تكوين الكيتين.',
+        uses: 'مكافحة العناكب في محاصيل الخضار والفاكهة.',
+        safety: 'سام للنحل والأسماك.'
+    },
+    'bifenazate': {
+        name: 'بيفينازات',
+        type: 'مبيد أكاروسي',
+        description: 'مبيد متخصص ضد العناكب الحمراء.',
+        uses: 'الخضروات والفاكهة ونباتات الزينة.',
+        safety: 'منخفض السمية للإنسان.'
+    },
+    'propargite': {
+        name: 'بروبارجيت',
+        type: 'مبيد أكاروسي',
+        description: 'يعمل على العناكب البالغة واليرقات.',
+        uses: 'مكافحة العناكب في الحمضيات والفواكه.',
+        safety: 'سام للإنسان عند التعرض المباشر ويجب الحذر.'
+    },
+    'amitraz': {
+        name: 'أميتراز',
+        type: 'مبيد أكاروسي وحشري',
+        description: 'مبيد فعال ضد القراد والعناكب.',
+        uses: 'يُستخدم في الزراعة والطب البيطري.',
+        safety: 'قد يسبب تسمم عند سوء الاستخدام.'
+    },
+    'cyhexatin': {
+        name: 'سيهيكساتين',
+        type: 'مبيد أكاروسي',
+        description: 'مبيد فعال ضد العناكب خاصة في الحمضيات.',
+        uses: 'يُستخدم في أشجار الفاكهة.',
+        safety: 'سام للكائنات المائية.'
+    },
+    'dicofol': {
+        name: 'ديكوفول',
+        type: 'مبيد أكاروسي (مشتق من DDT)',
+        description: 'مبيد قديم ضد العناكب.',
+        uses: 'أشجار الفاكهة والخضروات.',
+        safety: 'ذو سمية عالية ويُستخدم بشكل محدود حالياً.'
+    },
+    'oxythioquinox': {
+        name: 'أوكسيثيوكينوكس',
+        type: 'مبيد فطري/أكاروسي',
+        description: 'مبيد مزدوج الاستعمال ضد الفطريات والعناكب.',
+        uses: 'مكافحة بعض الأمراض الفطرية والعناكب في المحاصيل.',
+        safety: 'سام للبشر والكائنات المائية.'
+    },
+    'binapacryl': {
+        name: 'بيناباكريل',
+        type: 'مبيد فطري/أكاروسي',
+        description: 'مبيد مزدوج التأثير على العناكب والفطريات.',
+        uses: 'محاصيل الفواكه والخضار.',
+        safety: 'ذو خطورة عالية على البيئة.'
+    },
+    'dinocap': {
+        name: 'دينوكاب',
+        type: 'مبيد فطري وأكاروسي',
+        description: 'مبيد تلامسي ضد البياض الدقيقي والعناكب.',
+        uses: 'العنب، الخضروات، وأشجار الفاكهة.',
+        safety: 'متوسط السمية للإنسان.'
+    },
+    'quinomethionate': {
+        name: 'كوينوميثيونات',
+        type: 'مبيد فطري وأكاروسي',
+        description: 'يُستخدم لمكافحة بعض الفطريات والعناكب.',
+        uses: 'أشجار الفاكهة والعنب.',
+        safety: 'سام للكائنات المائية.'
+    },
+    'chlorothalonil': {
+        name: 'كلوروثالونيل',
+        type: 'مبيد فطري وقائي',
+        description: 'مبيد واسع الطيف يمنع إنبات الأبواغ.',
+        uses: 'البياض الزغبي، اللفحة، تبقعات الأوراق.',
+        safety: 'قد يسبب تهيج الجلد والعينين.'
+    },
+    'folpet': {
+        name: 'فولبت',
+        type: 'مبيد فطري وقائي',
+        description: 'مبيد تلامسي متعدد الاستعمال.',
+        uses: 'مكافحة البياض الزغبي واللفحات.',
+        safety: 'منخفض السمية نسبياً للإنسان.'
+    },
+    'captan': {
+        name: 'كابتان',
+        type: 'مبيد فطري وقائي',
+        description: 'يُستخدم على نطاق واسع كمبيد تلامسي.',
+        uses: 'الفواكه والخضروات.',
+        safety: 'قد يسبب تهيجاً عند التعرض المباشر.'
+    },
+    'captafol': {
+        name: 'كابتافول',
+        type: 'مبيد فطري وقائي',
+        description: 'مبيد قديم واسع الطيف.',
+        uses: 'الفواكه والخضروات.',
+        safety: 'ممنوع في كثير من الدول بسبب سميته.'
+    },
+    'dichlofluanid': {
+        name: 'ديكلوفلوانيد',
+        type: 'مبيد فطري وقائي',
+        description: 'مبيد فطري متنوع الاستخدام.',
+        uses: 'البياض الزغبي والعفن.',
+        safety: 'سام للكائنات المائية.'
+    },
+    'tolylfluanid': {
+        name: 'توليلفلوانيد',
+        type: 'مبيد فطري وقائي',
+        description: 'مبيد واسع الطيف مشابه للديكلوفلوانيد.',
+        uses: 'أمراض الأوراق والفواكه.',
+        safety: 'سام للنحل.'
+    },
+    'anilazine': {
+        name: 'أنيلزين',
+        type: 'مبيد فطري وقائي',
+        description: 'مبيد تلامسي ضد تبقعات الأوراق.',
+        uses: 'الطماطم والخضروات.',
+        safety: 'سام للإنسان عند التعرض المباشر.'
+    },
+    'quinoxifen': {
+        name: 'كوينوكسي فين',
+        type: 'مبيد فطري',
+        description: 'مبيد متخصص ضد البياض الدقيقي.',
+        uses: 'العنب والخضروات.',
+        safety: 'آمن نسبياً للإنسان.'
+    },
+    'triforine': {
+        name: 'تريفورين',
+        type: 'مبيد فطري',
+        description: 'مبيد جهازي ضد البياض الدقيقي.',
+        uses: 'العنب والخضروات ونباتات الزينة.',
+        safety: 'منخفض السمية للإنسان.'
+    },
+ 
+    'bupirimate': {
+        name: 'بوبيريمات',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد مخصص ضد البياض الدقيقي على الفواكه والخضروات.',
+        uses: 'العنب، التفاح، الطماطم، الخيار.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام السليم.'
+    },
+    'fenarimol': {
+        name: 'فيناريمول',
+        type: 'مبيد فطري جهازي',
+        description: 'يُستخدم لمكافحة البياض الدقيقي وبعض الفطريات الأخرى.',
+        uses: 'العنب، التفاح، الفواكه ذات القشرة الصلبة.',
+        safety: 'منخفض السمية للإنسان لكنه سام للكائنات المائية.'
+    },
+    'myclobutanil': {
+        name: 'مايكلوبوتانيل',
+        type: 'مبيد فطري جهازي',
+        description: 'يوقف نمو الفطريات من خلال تثبيط تركيب الأحماض الدهنية.',
+        uses: 'العنب، الطماطم، الخيار.',
+        safety: 'آمن نسبياً للإنسان والحيوان عند الاستخدام الصحيح.'
+    },
+    'triadimefon': {
+        name: 'ترياديميفون',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد واسع الطيف ضد البياض الدقيقي والأمراض الفطرية الأخرى.',
+        uses: 'الحبوب، الخضروات، الأشجار المثمرة.',
+        safety: 'منخفض السمية للإنسان لكنه سام للنحل والكائنات المائية.'
+    },
+    'triadimenol': {
+        name: 'ترياديمينول',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد فعال ضد البياض الدقيقي والأمراض الفطرية.',
+        uses: 'الحبوب، التفاح، العنب.',
+        safety: 'آمن نسبياً عند الاستخدام السليم.'
+    },
+    'tetraconazole': {
+        name: 'تتراكونازول',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد واسع الطيف يستخدم لمكافحة البياض الدقيقي والصدأ.',
+        uses: 'الحبوب، الخضروات، الأشجار المثمرة.',
+        safety: 'منخفض السمية للإنسان والحيوان.'
+    },
+    'diniconazole': {
+        name: 'دينكونازول',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد فطري فعال ضد البياض الدقيقي.',
+        uses: 'الخضروات، العنب، التفاح.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام الصحيح.'
+    },
+    'fenhexamid': {
+        name: 'فينكساميد',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد ضد العفن الرمادي وبعض الأمراض الفطرية الأخرى.',
+        uses: 'العنب، الطماطم، الفواكه.',
+        safety: 'منخفض السمية للإنسان.'
+    },
+    'spiroxamine': {
+        name: 'سبيروكسامين',
+        type: 'مبيد فطري',
+        description: 'يستخدم للسيطرة على البياض الدقيقي والعفن الرمادي.',
+        uses: 'العنب، الطماطم، الخيار.',
+        safety: 'آمن نسبياً للإنسان لكنه سام للكائنات المائية.'
+    },
+    'tolclofos-methyl': {
+        name: 'تولكولفوس-ميثيل',
+        type: 'مبيد فطري',
+        description: 'مبيد وقائي ضد البياض الدقيقي والأمراض الفطرية في الحبوب.',
+        uses: 'القمح، الشعير.',
+        safety: 'منخفض السمية للإنسان.'
+    }
+ ,
+    'carbendazim': {
+        name: 'كاربيندازيم',
+        type: 'مبيد فطري جهازي',
+        description: 'يُستخدم لمكافحة مجموعة واسعة من الفطريات النباتية عن طريق تثبيط نموها.',
+        uses: 'الحبوب، الخضروات، الفواكه، الأشجار المثمرة.',
+        safety: 'منخفض السمية للإنسان عند الاستخدام الصحيح، لكنه سام للكائنات المائية.'
+    },
+    'thiophanate-methyl': {
+        name: 'ثيوفانات-ميثيل',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد فعال ضد البياض الدقيقي والعفن الرمادي وبعض الفطريات الأخرى.',
+        uses: 'العنب، التفاح، الطماطم، الخيار.',
+        safety: 'آمن نسبياً عند الاستخدام السليم، لكنه سام للكائنات المائية.'
+    },
+    'mancozeb': {
+        name: 'مانكوزيب',
+        type: 'مبيد فطري تلامسي',
+        description: 'مبيد واسع الطيف يحمي النباتات من عدة أمراض فطرية.',
+        uses: 'البطاطا، الطماطم، العنب، الخضروات.',
+        safety: 'منخفض السمية للإنسان لكنه قد يسبب تهيج الجلد والعينين.'
+    },
+    'maneb': {
+        name: 'مانيب',
+        type: 'مبيد فطري تلامسي',
+        description: 'يستخدم لمكافحة الأمراض الفطرية في النباتات الزراعية.',
+        uses: 'الحبوب، الخضروات، الأشجار المثمرة.',
+        safety: 'منخفض السمية للإنسان لكنه سام للكائنات المائية.'
+    },
+    'zineb': {
+        name: 'زاينب',
+        type: 'مبيد فطري تلامسي',
+        description: 'يحمي النباتات من البياض الزغبي وبعض الفطريات الأخرى.',
+        uses: 'الخضروات، الفواكه، الحبوب.',
+        safety: 'منخفض السمية للإنسان لكنه سام للكائنات المائية.'
+    },
+    'propineb': {
+        name: 'بروبينب',
+        type: 'مبيد فطري تلامسي',
+        description: 'مبيد فطري واسع الطيف لمكافحة البياض الزغبي والعفن.',
+        uses: 'العنب، الطماطم، البطاطا، الخضروات.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام الصحيح.'
+    },
+    'thiram': {
+        name: 'ثيرام',
+        type: 'مبيد فطري تلامسي',
+        description: 'يُستخدم للسيطرة على الأمراض الفطرية والبذور المصابة.',
+        uses: 'الحبوب، الفواكه، الخضروات.',
+        safety: 'قد يسبب تهيج الجلد والعينين، ويجب ارتداء معدات الحماية.'
+    },
+    'captan': {
+        name: 'كابتان',
+        type: 'مبيد فطري تلامسي',
+        description: 'مبيد واسع الطيف ضد الأمراض الفطرية في الفواكه والخضروات.',
+        uses: 'التفاح، العنب، الطماطم، الخيار.',
+        safety: 'منخفض السمية للإنسان لكنه قد يسبب تهيج الجلد.'
+    },
+    'folpet': {
+        name: 'فولبت',
+        type: 'مبيد فطري تلامسي',
+        description: 'يحمي النباتات من مجموعة متنوعة من الفطريات.',
+        uses: 'العنب، الطماطم، الخضروات، الأشجار المثمرة.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام السليم.'
+    },
+    'propiconazole': {
+        name: 'بروبيكونازول',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد واسع الطيف يستخدم للسيطرة على الأمراض الفطرية في الحبوب والخضروات.',
+        uses: 'القمح، الشعير، الطماطم، الخيار.',
+        safety: 'منخفض السمية للإنسان لكنه سام للكائنات المائية.'
+    }
+ ,
+    'hexaconazole': {
+        name: 'هيكسكونازول',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد فطري واسع الطيف يستخدم ضد البياض الدقيقي والصدأ.',
+        uses: 'الأرز، الحبوب، الخضروات، الأشجار المثمرة.',
+        safety: 'منخفض السمية للإنسان والحيوان عند الاستخدام الصحيح.'
+    },
+    'tebuconazole': {
+        name: 'تيبوكونازول',
+        type: 'مبيد فطري جهازي',
+        description: 'مبيد فعال ضد البياض الدقيقي والأمراض الفطرية الأخرى في الحبوب والخضروات.',
+        uses: 'القمح، الشعير، العنب، الطماطم.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام الصحيح، لكنه سام للكائنات المائية.'
+    },
+    'myclobutanil': {
+        name: 'مايكلوبوتانيل',
+        type: 'مبيد فطري جهازي',
+        description: 'يوقف نمو الفطريات عن طريق تثبيط تركيب الأحماض الدهنية.',
+        uses: 'العنب، الطماطم، الخيار.',
+        safety: 'آمن نسبياً للإنسان والحيوان عند الاستخدام الصحيح.'
+    },
+    'triadimefon': {
+        name: 'ترياديميفون',
+        type: 'مبيد فطري جهازي',
+        description: 'يستخدم للسيطرة على البياض الدقيقي وبعض الفطريات الأخرى.',
+        uses: 'الحبوب، التفاح، الطماطم، العنب.',
+        safety: 'منخفض السمية للإنسان لكنه سام للكائنات المائية.'
+    },
+    'triadimenol': {
+        name: 'ترياديمينول',
+        type: 'مبيد فطري جهازي',
+        description: 'فعال ضد البياض الدقيقي والأمراض الفطرية الأخرى.',
+        uses: 'الحبوب، التفاح، العنب.',
+        safety: 'آمن نسبياً عند الاستخدام السليم.'
+    }
+ ,
+    'alanycarb': {
+        name: 'ألانكارب',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد كاربابورات فعال ضد مجموعة واسعة من الحشرات عن طريق تثبيط إنزيم الأسيتيل كولين إستراز.',
+        uses: 'الخضروات، البطاطا، الذرة.',
+        safety: 'منخفض السمية للإنسان عند الاستخدام الصحيح، لكن سام للنحل والأسماك.'
+    },
+    'bendiocarb': {
+        name: 'بنديواكارب',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'يستخدم لمكافحة الحشرات القارضة والحشرات الطائرة عن طريق تثبيط AChE.',
+        uses: 'الخضروات، الحبوب، الأشجار المثمرة.',
+        safety: 'سام للكائنات المائية، ويتطلب ارتداء معدات الحماية.'
+    },
+    'butocarboxim': {
+        name: 'بوتوكاربوكسم',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد كاربابورات يستعمل ضد الحشرات على المحاصيل المختلفة.',
+        uses: 'البطاطا، الطماطم، الذرة.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام السليم، لكنه سام للنحل.'
+    },
+    'carbosulfan': {
+        name: 'كاربوسولفان',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'يعمل عن طريق تثبيط AChE، فعال ضد العديد من الحشرات.',
+        uses: 'الذرة، البطاطا، القطن.',
+        safety: 'سامة للكائنات المائية والنحل، يجب اتباع تعليمات السلامة.'
+    },
+    'carbofuran': {
+        name: 'كاربوفوران',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد شديد الفعالية ضد الآفات الحشرية عن طريق تثبيط إنزيم AChE.',
+        uses: 'الذرة، البطاطا، الأرز.',
+        safety: 'سام جداً للإنسان والحيوانات، يجب التعامل معه بحذر شديد.'
+    },
+    'methomyl': {
+        name: 'ميثوميل',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'كاربابورات سريع المفعول لمكافحة مجموعة واسعة من الحشرات.',
+        uses: 'الخضروات، القطن، البطاطا.',
+        safety: 'سام للإنسان والحيوانات، ويجب ارتداء معدات الوقاية الشخصية.'
+    }
+ ,
+    'pirimicarb': {
+        name: 'بيريميكارب',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد كاربابورات فعال ضد المن وأحياناً ضد حشرات أخرى، يعمل عن طريق تثبيط AChE.',
+        uses: 'الخضروات، الحبوب، البطاطا.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام السليم، لكنه سام للنحل.'
+    },
+    'propoxur': {
+        name: 'بروبوكسر',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'يقتل الحشرات عن طريق تثبيط AChE، فعال ضد الحشرات الزاحفة والطائرة.',
+        uses: 'المنازل، المخازن، الأشجار المثمرة.',
+        safety: 'سامة للإنسان إذا تم تناولها، ويجب ارتداء معدات الحماية.'
+    },
+    'thiodicarb': {
+        name: 'ثيوديكارب',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد كاربابورات واسع الطيف، يستخدم لمكافحة المن والحشرات القارضة.',
+        uses: 'الخضروات، البطاطا، الذرة.',
+        safety: 'سامة للكائنات المائية ويجب الحذر عند الرش.'
+    },
+    'thiofanox': {
+        name: 'ثيوفانوكس',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'يستخدم لمكافحة المن والحشرات القارضة عن طريق تثبيط AChE.',
+        uses: 'الخضروات، البطاطا، الحبوب.',
+        safety: 'سامة للنحل والكائنات المائية.'
+    },
+    'triazamate': {
+        name: 'تريازامات',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد فعال ضد الحشرات القارضة والمن، يعمل عن طريق تثبيط إنزيم AChE.',
+        uses: 'الخضروات، البطاطا، الحبوب.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام السليم.'
+    },
+    'trimethacarb': {
+        name: 'تريميثاكارب',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد كاربابورات يستخدم لمكافحة الحشرات على المحاصيل المختلفة.',
+        uses: 'الخضروات، البطاطا، الذرة.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للكائنات المائية.'
+    },
+    'xmc': {
+        name: 'XMC',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد حشري فعال ضد مجموعة متنوعة من الآفات.',
+        uses: 'الخضروات، البطاطا، الحبوب.',
+        safety: 'يجب اتباع تعليمات السلامة لتجنب التعرض المباشر.'
+    },
+    'xylylcarb': {
+        name: 'زيليلكارب',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'كاربابورات يستخدم لمكافحة الحشرات على المحاصيل الزراعية.',
+        uses: 'الخضروات، البطاطا، الحبوب.',
+        safety: 'سامة للكائنات المائية، ويجب ارتداء معدات الحماية عند الرش.'
+    }
+ ,
+    'acephate': {
+        name: 'أسيفات',
+        type: 'مبيد حشري (AChE inhibitor)',
+        description: 'مبيد فوسفوري فعال ضد الحشرات عن طريق تثبيط AChE.',
+        uses: 'الخضروات، الحبوب، الأشجار المثمرة.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام الصحيح، لكنه سام للنحل والأسماك.'
+    },
+    'azamethiphos': {
+        name: 'أزاميثيفوس',
+        type: 'مبيد حشري فوسفوري',
+        description: 'يستخدم لمكافحة الحشرات الطائرة والزاحفة، فعال ضد مجموعة واسعة من الآفات.',
+        uses: 'المواشي، المخازن، الحبوب.',
+        safety: 'سام للكائنات المائية، ويجب ارتداء معدات الوقاية.'
+    },
+    'azinphos-ethyl': {
+        name: 'أزينفوس-إيثيل',
+        type: 'مبيد فوسفوري',
+        description: 'يعمل عن طريق تثبيط إنزيم AChE، فعال ضد الحشرات القارضة والطائرة.',
+        uses: 'الذرة، البطاطا، الخضروات.',
+        safety: 'سامة للإنسان والحيوانات، ويجب الحذر عند الرش.'
+    },
+    'azinphos-methyl': {
+        name: 'أزينفوس-ميثيل',
+        type: 'مبيد فوسفوري',
+        description: 'مبيد حشري واسع الطيف، يمنع عمل AChE ويقتل الحشرات.',
+        uses: 'الذرة، التفاح، الخضروات.',
+        safety: 'سامة جداً للإنسان والحيوانات، ومرتفعة السمية للنحل.'
+    },
+    'cadusafos': {
+        name: 'كادوسافوس',
+        type: 'مبيد فوسفوري',
+        description: 'يستخدم لمكافحة الديدان الحشرية في التربة.',
+        uses: 'الذرة، البطاطا، الخضروات الجذرية.',
+        safety: 'سامة للإنسان والحيوانات المائية، ويجب ارتداء معدات الحماية.'
+    },
+    'chlorpyrifos': {
+        name: 'كلوربيريفوس',
+        type: 'مبيد فوسفوري',
+        description: 'مبيد واسع الطيف عن طريق تثبيط AChE، فعال ضد العديد من الآفات.',
+        uses: 'الخضروات، الفواكه، الحبوب.',
+        safety: 'سامة للإنسان والكائنات المائية، يجب اتباع إجراءات السلامة.'
+    },
+    'chlorpyrifos-methyl': {
+        name: 'كلوربيريفوس-ميثيل',
+        type: 'مبيد فوسفوري',
+        description: 'يشبه الكلوربيريفوس ويستخدم في الحبوب والمخازن.',
+        uses: 'القمح، الشعير، الحبوب المخزنة.',
+        safety: 'سام للإنسان والكائنات المائية، ويجب ارتداء معدات الوقاية.'
+    },
+    'diazinon': {
+        name: 'ديازينون',
+        type: 'مبيد فوسفوري',
+        description: 'مبيد واسع الطيف عن طريق تثبيط AChE، فعال ضد الحشرات الطائرة والزاحفة.',
+        uses: 'الخضروات، الفواكه، الحبوب.',
+        safety: 'سامة للإنسان والحيوانات المائية.'
+    },
+    'dimethoate': {
+        name: 'ديميثوات',
+        type: 'مبيد فوسفوري',
+        description: 'يستخدم ضد المن والحشرات القارضة عن طريق تثبيط AChE.',
+        uses: 'الخضروات، البطاطا، الفواكه.',
+        safety: 'سامة للإنسان والحيوانات، ويجب ارتداء معدات الوقاية.'
+    },
+    'fenthion': {
+        name: 'فينثيون',
+        type: 'مبيد فوسفوري',
+        description: 'يستخدم لمكافحة الآفات الطائرة والزاحفة، فعال ضد المن والخنافس.',
+        uses: 'الأرز، البطاطا، الخضروات.',
+        safety: 'سامة للإنسان والكائنات المائية، ويجب اتباع تعليمات السلامة.'
+    },
+    'malathion': {
+        name: 'مالاثيون',
+        type: 'مبيد فوسفوري',
+        description: 'مبيد واسع الطيف، يعمل عن طريق تثبيط AChE.',
+        uses: 'الخضروات، الأشجار المثمرة، القطن.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام الصحيح، لكنه سام للنحل.'
+    },
+    'methomyl': {
+        name: 'ميثوميل',
+        type: 'مبيد كاربابورات',
+        description: 'مبيد سريع المفعول لمكافحة مجموعة واسعة من الحشرات عن طريق تثبيط AChE.',
+        uses: 'الخضروات، القطن، البطاطا.',
+        safety: 'سام للإنسان والحيوانات، يجب ارتداء معدات الوقاية.'
+    },
+    'sulfoxaflor': {
+        name: 'سولفوكسافلور',
+        type: 'مبيد حشري جديد (sulfoximine)',
+        description: 'مبيد حشري يستهدف جهاز الأعصاب المركزي للآفات، فعال ضد المن.',
+        uses: 'الخضروات، الفواكه، الأشجار المثمرة.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للنحل ويجب استخدامه بحذر.'
+    }
+ ,
+    'flupyradifurone': {
+        name: 'فلوبيراديفورون',
+        type: 'مبيد حشري (butenolide)',
+        description: 'يعمل على الجهاز العصبي للآفات، فعال ضد المن والذبابة البيضاء.',
+        uses: 'الخضروات، الفواكه، الأشجار المثمرة.',
+        safety: 'آمن نسبياً للإنسان، لكن سام للنحل ويجب الالتزام بتعليمات الرش.'
+    },
+    'triflumezopyrim': {
+        name: 'تريفلو ميزوبيريم',
+        type: 'مبيد حشري (mesoionic)',
+        description: 'يستخدم لمكافحة المن الأبيض والآفات الصغيرة على المحاصيل.',
+        uses: 'الأرز، القطن، الخضروات.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للنحل.'
+    },
+    'dicloromezotiaz': {
+        name: 'ديكلورومييزوتياز',
+        type: 'مبيد حشري (unknown)',
+        description: 'مبيد يستخدم لمكافحة الآفات الزراعية.',
+        uses: 'الخضروات والحبوب.',
+        safety: 'يجب اتباع تعليمات السلامة عند الاستخدام.'
+    },
+    'fenmezoditiaz': {
+        name: 'فينميزوديتياز',
+        type: 'مبيد حشري',
+        description: 'يستعمل ضد الحشرات القارضة والمن على المحاصيل الزراعية.',
+        uses: 'الخضروات، البطاطا، الذرة.',
+        safety: 'سامة للنحل والكائنات المائية.'
+    },
+    'flupyrimin': {
+        name: 'فلوبيريمين',
+        type: 'مبيد حشري',
+        description: 'مبيد عصبي للآفات، فعال ضد المن الأبيض والحشرات الصغيرة.',
+        uses: 'الخضروات، الفواكه، الأشجار المثمرة.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للنحل.'
+    },
+    'spinetoram': {
+        name: 'سبينيتورام',
+        type: 'مبيد حشري (spinosyn)',
+        description: 'مبيد حشري فعال ضد مجموعة واسعة من الحشرات عن طريق تأثير عصبي.',
+        uses: 'الخضروات، الفواكه، البطاطا.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للأسماك والكائنات المائية.'
+    },
+    'spinosad': {
+        name: 'سبينوساد',
+        type: 'مبيد حشري (spinosyn)',
+        description: 'يستخدم لمكافحة الحشرات الطائرة والزاحفة، يعمل على الجهاز العصبي.',
+        uses: 'الخضروات، الفواكه، الأشجار المثمرة.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للنحل والكائنات المائية.'
+    },
+    'abamectin': {
+        name: 'أبامكتين',
+        type: 'مبيد حشري (avermectin)',
+        description: 'مبيد عصبي فعال ضد العث والآفات القارضة.',
+        uses: 'الخضروات، الفواكه، البطاطا.',
+        safety: 'سام للأسماك، ويجب اتباع تعليمات السلامة.'
+    },
+    'emamectin benzoate': {
+        name: 'إيمامكتين بنزوات',
+        type: 'مبيد حشري (avermectin)',
+        description: 'مبيد فعال ضد العث والآفات القارضة عن طريق التأثير العصبي.',
+        uses: 'الخضروات، الفواكه، البطاطا.',
+        safety: 'سام للكائنات المائية، ويجب ارتداء معدات الوقاية.'
+    },
+    'lepimectin': {
+        name: 'ليبيمكتين',
+        type: 'مبيد حشري (avermectin)',
+        description: 'مبيد عصبي فعال ضد مجموعة واسعة من الآفات.',
+        uses: 'الخضروات، الفواكه، الأشجار المثمرة.',
+        safety: 'سامة للكائنات المائية.'
+    },
+    'milbemectin': {
+        name: 'ميلبمكتين',
+        type: 'مبيد حشري (avermectin)',
+        description: 'يستخدم لمكافحة العث والآفات القارضة على المحاصيل.',
+        uses: 'الخضروات، الفواكه، البطاطا.',
+        safety: 'سامة للكائنات المائية.'
+    },
+    'hydroprene': {
+        name: 'هيدروبريين',
+        type: 'مبيد نمو الحشرات (juvenile hormone analogue)',
+        description: 'يمنع نمو الحشرات ويؤخر نمو البيض واليرقات.',
+        uses: 'المخازن، الحبوب، المنازل.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام السليم.'
+    },
+    'kinoprene': {
+        name: 'كينوبرين',
+        type: 'مبيد نمو الحشرات (juvenile hormone analogue)',
+        description: 'يعمل على تعطيل دورة حياة الحشرات عن طريق هرمونات النمو.',
+        uses: 'المخازن، الحبوب، المنازل.',
+        safety: 'آمن نسبياً للإنسان عند الاستخدام السليم.'
+    },
+    'methoprene': {
+        name: 'ميثوبرين',
+        type: 'مبيد نمو الحشرات (juvenile hormone analogue)',
+        description: 'يمنع نمو اليرقات والحشرات الكاملة، فعال ضد البعوض والحشرات المخزنية.',
+        uses: 'المخازن، المياه الراكدة، المنازل.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام لبعض الكائنات المائية.'
+    },
+    'fenoxycarb': {
+        name: 'فينوكسيكارب',
+        type: 'مبيد نمو الحشرات (juvenile hormone analogue)',
+        description: 'يعمل على تعطيل دورة حياة الحشرات ومنع نمو البيض واليرقات.',
+        uses: 'المخازن، الحبوب، المنازل.',
+        safety: 'آمن للإنسان عند الاستخدام السليم.'
+    },
+    'pyriproxyfen': {
+        name: 'بيريبروكسيفين',
+        type: 'مبيد نمو الحشرات (juvenile hormone analogue)',
+        description: 'يمنع نمو الحشرات ويؤثر على دورة حياة اليرقات.',
+        uses: 'الخضروات، المخازن، المياه الراكدة.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للنحل والكائنات المائية.'
+    },
+    'triflumuron': {
+        name: 'تريفلومورون',
+        type: 'مبيد نمو الحشرات (chitin synthesis inhibitor)',
+        description: 'يمنع تكوين الكيتين في الحشرات، ويؤثر على نمو الهيكل الخارجي.',
+        uses: 'الخضروات، الأشجار المثمرة، البطاطا.',
+        safety: 'آمن نسبياً للإنسان، لكنه سام للنحل والكائنات المائية.'
+    }
+        };
+
+        // البيانات الاحتياطية (تعمل محلياً)
+        const fallbackData =   `
+registrationNo,commonName,tradeName,localName,ai,company,expiry
+1504,Lufenuron 5%w/w,Match 050 EC,الاتحاد الزراعي الاردني المحدودة المسؤوليه,5%W/V,SYNGENTA,07/01/2027
+2329,Lufenuron 5%w/v,Grand 5% EC,البرج لصناعة المبيدات الزراعية والبيطرية,5%W/V,ALBURJ.,غير منتهي
+2542,Lufenuron,Glory-5% EC,مدماك لانتاج الاسمدةوالادوية الزراعية والبيطرية,5%W/V,مدماك لانتاج الاسمدة والادوية الزراعية والبيطرية,19/11/2028
+2734,Lufenuron 5%w/v,Wormatin 5% EC,الاردنيه لانتاج المبيدات الحشريه والعلاجات الزراعي,5%W/V,ATI,29/03/2026
+3624,Lufenuron,Quix-5% EC,جعفر الكردي,5% W/V,Zhejiang Sega Science And Technology Co.LTD,19/3/2027
+3856,Lufenuron 40%+ emamectin benzoate 5% w/w,Emaron 45 WG,Mobedco,40%+5%w/w,Mobedco,21/8/2024
+3856,Lufenuron 40%+ emamectin benzoate 5% w/w,Emaron 45 WG,Mobedco,40%+5%w/w,Mobedco,21/8/2029
+4237,Lufenuron,Aseev 5%EC,مؤسسة النشامى الزراعية,5%W/V,Zhejiang Sega Science And Technology Co.Ltd.,18/3/2027
+2531,Lufenuron w/v,Sino-C 5% EC,الديار للادويه البيطريه,5%W/V,SINO AGRO-CHEMICAL,19/5/2019
+2650,Lufenuron 5% w/v,Mosif EC,مصانع الادويه البيطريه والزراعيه(فابكو),5%W/V,VAPCO,3/6/2030
+2171,Carbosulfan 25% w/v,Carbochem EC,المتقدمه لصناعه المبيدات الزراعيه والعلاجات البيطر,25% W/V,CHEMVET.,5/5/2025
+1627,Carbosulfan,Bright -25% EC,شركة مصانع الادوية البيطرية والزراعية/ فابكو,25% W/V,شركة مصانع الادوية البيطرية والزراعية/ فابكو,02/04/2024
+3521,Carbosulfan,Solfan -25%EC,شركة جراسيا للصناعات الزراعية,25%w/v,شركة جراسيا للصناعات الزراعية,غير منتهي
+699,Methiocarb-50% W/W,Mesurol-50%WP,الشركة العربية للمستحضرات الطبية والزراعية,50% W/W,BAYER,31/03/2021
+3312,Methiocarb 50%W/W,Provocarb-50% WP,الهلال الخصيب لانتاج الادويه البيطريه والزراعيه,50% W/W,Fertile Crescent,12/02/2020
+4049,Formetanate,Formazona 50% SP,شركة اريزونا المتحدة لصناعة البتروكيماويات,50%w/w,Arezona,غير منتهيه
+1764,Formetanate,Dicarzol -50% SP,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,50% W/V,SBM/ Gowan Crop Protection,31/7/2026
+220,Oxamyl,Vydate-24% SL,شركة المواد الزراعية (مقدادي),24% W/V,DUPONT,19/3/2027
+3883,Oxamyl-24%w/v,Move-Oxamyl -24%SL,الشركة الحديثة لصناعة الأدوية البيطرية والمبيدات الزراعية,24%w/v,الشركة الحديثة لصناعة الأدوية البيطرية والمبيدات الزراعية,14/1/2025
+3883,Oxamyl-24%w/v,Move-Oxamyl -24%SL,الشركة الحديثة لصناعة الأدوية البيطرية والمبيدات الزراعية,24%w/v,الشركة الحديثة لصناعة الأدوية البيطرية والمبيدات الزراعية,14/1/2030
+4219,OXAMYL 24% W/V,OXAZONE 24 SL,اريزونا المتحدة للصناعات البتروكيماوية,24%ًW/V,اريزونا المتحدة للصناعات البتروكيماوية,غير منتهي
+4219,OXAMYL 24% W/V,OXAZONE 24 SL,اريزونا المتحدة للصناعات البتروكيماوية,24%ًW/V,اريزونا المتحدة للصناعات البتروكيماوية,غير منتهي
+4220,Oxamyl,Oxafel 24SL,مؤسسة القوافل الصناعية الزراعية,24%W/V,مؤسسة القوافل الصناعية الزراعية,غير منتهي
+4293,Oxamyl,petra 24 SL,شركة مصنع معادن لإنتاج المبيدات والأسمدة,24%W/V,MAADEN,غير منتهي
+4352,Oxamyl,Vylin 45.22% SL,شركة اليمامة لصناعة المواد الزراعية,45.22%W/V,شركة اليمامة لصناعة المواد الزراعية,غير منتهي
+1801,Oxamyl 24%w/v,Oxamate-24%SL,الشركة العربية لصناعات المبيدات والادوية البيطرية,24% W/V,MOBEDCO,غير منتهيه
+2570,Oxamyl,Oxamytod -24% SL,المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية ( كيمفيت),24% W/V,المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية ( كيمفيت),26/10/2028
+2306,Azamethiphos,Azaril-50%- WP,شركه مصانع الادويه البيطريه والزراعيه(فابكو),50%w/w,vapco,30/8/2026
+1198,Chlorpyrifos,Chlorofet -48%EC,شركة مصانع الادوية البيطرية والزراعية/فابكو,48% W/V,شركة مصانع الادوية البيطرية والزراعية/فابكو,8/5/2029
+1194,Chlorpyrifos,Durmite 4 TC -EC,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,48% W/V,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,8/5/2024
+1343,chlorpyrifos 48% w/v,chloryam_48% EC,شركة اليمامة لصناعة المواد الزراعية المحدودة,48% W/V,YAMAMMA,9/1/2030
+1176,Chlorpyrifos,Termicide-40.8% EC,مصانع الادوية البيطرية والزراعية/ فابكو شركة,40.8% W/V,مصانع الادوية البيطرية والزراعية/ فابكو شركة,28/2/2029
+1435,Chlorpyrifos-48% W/V,Termayam Plus 48% EC,اليمامه لصناعه المواد الزراعيه المحدودة,48% W/V,YAMAMMA,20/10/2026
+2374,Chlorpyrifos,Locufos -45% ULV,الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعي,45% W/V,ATI,27/6/2022
+1431,chlorpyrifos-50% W/V,Acichiore-50% EC,مؤسسةصناعات الكيماويات الزراعية,50% W/V,ACI,30/10/2025
+1468,chlorpyrifos+Cypermethrin,Chlorycyrin -22% EC,مؤسسة الارض الخضراء الزراعية,20% +20% (W/V),Arysta Lifescience,12/12/2021
+2595,Chlorpyrifos 26%+Tetramethrin 2%+P.B.O 8%w/v,Chloracid 36 EC,الاردنية لانتاج المبيدات الحشريةوالعلاجات الزراعية,26%+2%+8% W/V,ATI,13/10/2029
+3914,chlorpyrifos,Move chlorpyrifos 48% EC,شركة الحديثة لصناعة الادوية البيطرية والمبيدات الزراعية,48%w\v,Movetco,3/9/2025
+1604,Chlorpyrifos-methyl EC,Chlorban 50%W/V,مدماك لانتاج الاسمده والادوية الزراعية,50% W/V,MEDMAC,07/11/2018
+936,Diazinon,Yamazinon-60% EC,اليمامة لصناعة المواد الزراعية المحدودة,60% W/V,YAMAMMA,غير منتهي
+1209,Diazinon,Diazinon-60% EC,شركة مصانع الادوية البيطرية والزراعية ( فابكو),60% W/V,شركة مصانع الادوية البيطرية والزراعية ( فابكو),26/6/2029
+1338,Diazinon 10% w/w,yamazon-10%G,شركه اليمامه لصناعه المواد الزراعيه المحدودة,10% W/W,YAMAMMA,1/7/2025
+1378,Diazinon-60% W/V,yazone-60%EC,اليمامه لصناعه المواد الزراعيه المحدودة,60% W/V,YAMAMMA,18/12/2025
+804,Diazinon 60%,Diazinon-60%EC,شركة مصانع الادوية البيطرية والزراعية (فابكو),60% W/V,VAPCO,22/08/2026
+1135,Diazinon,Diazain-60% EC,مدماك الانتاج الاسمدة والادوية الزراعية والبيطرية,60% W/V,مدماك لانتاج الاسمدة والادوية الزراعية والبيطرية,18/11/2023
+965,Diazinon-10% W/W,Diazinon-10%GR,شركه مصانع الادويه البيطريه والزراعيه/فابكو,10% W/W,VAPCO,01/02/2026
+1258,diazinon 60% w/v,diazate-60 EC,الشركة العربية لصناعات المبيدات والاوية البيطرية,60% W/V,MOBEDCO,1/11/2029
+1855,Diazinon,Diazate - 60% EC,العربية لصناعة المبيدات والأدوية البيطرية (مبيدكو),60% W/V,MOBEDCO,غير منتهيه
+958,Diazinon-5% W/W,Diazinon_5% GR,شركة مصانع الادوية البيطرية والزراعية\فابكو,5% W/W,VAPCO,01/02/2026
+768,Tetramethrin-0.2%+Dichlorvos-0.5%+PBO-1% W/W,Tetox Fly Aerosol,الشركة الاردنية الصناعيه البتروكيماوية,0.2%+0.5%+1%ًW/W,لشركة الاردنية الصناعيه البتروكيماوية,8/6/2025
+1133,Dichlorvos,Yamavos-50% EC,اليمامه لصناعه المواد الزراعيه المحدودة,50% W/V,اليمامه لصناعه المواد الزراعيه المحدودة,15/1/2029
+644,Tetramethrin-0.2%+Dichlorvos-0.5%+P.B.O-1% W/W,Tak turbo-Aerosol,الشركه الاردنيه الصناعيه البتروكيماويه,0.2%+0.5%+1%ًW/W,JORDAN INDUSTRIAL PETROCHEMICAL,08/06/2025
+865,dichlorvos 50%,dede_vap 50% EC,شركة مصانع الادوية البيطرية والزراعية (فابكو),50% W/V,VAPCO,غير منتهي
+1150,Dimethoate +Deltamethtin,Deltasuper+D -EC,الشركة العربية لصناعة المبيدات والادوية البيطرية/ مبيدكو,40%+ 1.25% W/V,الشركة العربية لصناعة المبيدات والادوية البيطرية/ مبيدكو,3/1/2029
+1246,Dimethoate,Acioate -40% EC,مؤسسة صناعات الكيماويات الزراعية,40% W/V,مؤسسة صناعات الكيماويات الزراعية,7/9/2023
+1389,Dimethoate-40% W/V,Yamathoate_40%EC,شركة اليمامة لصناعة المواد الزراعية المحدودة,40% W/V,YAMAMMA,09/10/2025
+1077,Dimethoate,Dimethate - 40% EC,(العربية لصناعة المبيدات والادوية البيطرية (مبيدكو,40% W/V,MOBEDCO,غير منتهيه
+1662,Dimethoate,Dimerox-40% EC,شركة عبد الحافظ الزراعيه,40% W/W,Jiangsu Tenglong Biological and Medicinal Co.LTD/ AGRODRAGON,14/7/2025
+3666,Dimethoate,Agrothoate - 40% EC,المجموعه التخصصية للادوية البيطرية والزراعية,40% W/V,Hunan Haili Changed Pesticide Chemical Industry Co.LTd/Chongqing Shining Fine Chemicals Co.LTD,3/6/2025
+1823,Dimethoate 40%w/v,Dime-40 EC,المتقدمه لصناعه المبيدات الزراعيه والعلاجات البيطر,40% W/V,CHEMVET.,غير منتهي
+2426,Dimethoate,Dimate-40% EC,شركه الاشراق للزراعه والتجارة,40% W/V,JIANGSU TENGLONG BIO. / ZHENJIANG AGREEN CO.,14/7/2025
+2924,Dimethoate,Dimo-40%EC,مؤسسةكريستال للزراعة والتجارة,40%W/V,KENSO CORPORATION (M),21/5/2022
+1036,Dimethoate 40%W/V,Dimethoate-40%,عبد الحافظ الزراعيه,40% W/V,شركة كفر الزيات للمبيدات والكيماويات,30/6/2023
+1891,Fenamiphos 10% w/w,Fenatode10% G,مصانع الادوية البيطرية والزراعية فابكو,10%W/W,VAPCO,28/1/2022
+1897,Fenamiphos 10%w/w,Medacur- granules,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,10%W/W,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,8/4/2022
+805,fenitrothion50%,senthion-50% EC,شركة مصانع الادوية البيطرية والزراعية فابكو,50% W/V,VAPCO,22/08/2026
+1189,Fenitrothion,Senyam -50% EC,شركة اليمامه لصناعه المواد الزراعيه المحدودة,50% W/V,شركة اليمامه لصناعه المواد الزراعيه المحدودة,23/3/2024
+1323,Fenitrothion 50% w/v,Fenito EC,مدماك لانتاج الاسمدة والادويه الزرايه والبيطريه,50% W/V,MEDMAC,09/01/2025
+833,fenitrothion 100%,senthion s-100% ULV,شركة مصانع الادوية البيطرية والزراعيه (فابكو),100% W/V,VAPCO,22/08/2026
+1437,Fenitrothion-25% + Fenvalerate-5% W/V,Fenikill_30%EC,شركة مصانع الادوية البيطرية والزراعية,25+5% W/V,VAPCO,03/09/2026
+994,Fenitrothion-40% W/V,Fentroth - 40%EC,الشركة العربية لصناعة المبيدات والادوية البيطرية,40% W/V,MOBEDCO,16/09/2025
+2202,Fenitrothion 50%w/v,Fendor ec,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,50% W/V,MEDMAC,29/12/2025
+1463,Fenitrothion 100%w/v,Fenmac ULV,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,100% W/V,MEDMAC,غير منتهيه
+1958,Fenitrothion,Sumiyam-50% EC,اليمامة لصناعة المواد الزراعية المحدودة,50% W/V,اليمامة لصناعة المواد الزراعية المحدودة,غير منتهي
+4355,Fosthiazate,Vapozate 50%EC,شركة مصانع الأدوية البيطرية والزراعية (فابكو),50% W/V,شركة مصانع المواد الزراعية والكيماوية( اجروكيم),غير منتهي
+3873,Fosthiazate-75% W/V,Nemazate-75% EC,مصنع مدماك لإنتاج الأسمدة والأدوية الزراعية,75%w/v,Medmak,28/2/2024
+4246,Fosthiazate,Nemafose 50%EC,شركة جراسيا للصناعات الزراعية,50%W/V,شركة جراسيا للصناعات الزراعية,غير منتهي
+4246,Fosthiazate,Nemafose 50%EC,شركة جراسيا للصناعات الزراعية,50%W/V,Geraca,غير منتهي
+4256,Fosthiazate 50% w/v,Throne 50%EC,شركة اليمامة لصناعة المواد الزراعية,50%W/V,شركة اليمامة لصناعة المواد الزراعية,غير منتهي
+3715,Fosthiazate,Melithorin -15% EC,شركة الاتحاد الزراعي الاردني,15% W/V,Agrobest Grup Tarim LLalari,17/7/2023
+4522,Fosthiazate+,MATODA - N,عبدالحميد عبدالحافظ,10%W/W+,,30/07/2025
+987,Malathion-57% W/V,Vap-Malathion - 57%EC,مصانع الادويه البيطريه والزراعيه(فابكو),57% W/V,VAPCO,09/02/2026
+1170,Malathion,Malathion-96% ULV,الشركة العربية لصناعة المبيدات والادوية البيطرية/ مبيدكو,96% W/V,الشركة العربية لصناعة المبيدات والادوية البيطرية/ مبيدكو,28/2/2024
+1215,Malathion,Medathion-50% EC,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,50% W/V,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,26/6/2024
+1268,Malathion,Acilal -8 PH EC,مؤسسة صناعات الكيماويات الزراعية,100% W/V,مؤسسة صناعات الكيماويات الزراعية,14/8/2024
+1112,Malathion,Eagle- 50% EC,العربية لصناعة المبيدات والادوية البيطرية مبيدكو,50% W/V,MOBEDCO,غير منتهي
+1113,Malathion,Yamathion -50% EC,شركة اليمامة لصناعه المواد الزراعيه المحدودة,50% W/V,شركة اليمامة لصناعه المواد الزراعيه المحدودة,6/9/2028
+1037,Malathion 50%W/V,Malathate-50 EC,الشركة العربيه لصناعه المبيدات والادوية البيطرية,50% W/V,MOBEDCO,21/03/2026
+1508,Malathion 50%W/V,Yapithone 50 EC,اليمامه لصناعه المواد الزراعيه المحدودة,50% W/V,YAMAMMA,غير منتهي
+1653,Malathion,Malafos-57% EC,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,57% W/V,مدماك لانتاج الاسمده والادوية الزراعية والبيطرية,02/03/2024
+799,Malathion-50%W/V,Vap-Malathion-50%EC,شركه مصنع الادويه البيطريه والزراعيه(فابكو),50% W/V,VAPCO,10/12/2029
+1157,Methidathion,Medacide -40% EC,شركة مدماك لانتاج الاسمدة والادويه الزراعية والبيطريه,40% W/V,شركة مدماك لانتاج الاسمدة والادويه الزراعية والبيطريه,5/2/2024
+1285,methidathion 40% w/v,supera EC,مؤسسة صناعات الكيماويات الزراعية,40%w/v,ACI,31/5/2030
+1305,methidathion 42% w/v,superadate EC,العربية لصناعات المبيدات والادوية البيطرية مبيدكو,42% W/V,MOBEDCO,21/09/2025
+1478,Methidathion 40%w/v,Superyam-40% ECC,شركه اليمامه لصناعه المواد الزراعيه المحدودة,42% W/V,YAMAMMA,18/12/2025
+1902,Methidathion 40%w/v,Advathion-40% EC,المتقدمه لصناعه المبيدات الزراعيه والعلاجات البيطر,40%w/v,CHEMVET.,غير منتهي
+1848,Phenthoate 50% w/v,Dubial EC,مدماك لانتاج الاسمدة والادوية الزراعية والبيطرية,50% W/V,MEDMAC,غير منتهي
+2049,Profenofos-72% W/V,Cord-72% EC,الاشراق للزراعة والتجارة,72% W/V,HELB,31/12/2026
+3192,Profenofos+Cypermethrin 40%+4%W/W,PROSPER 44 EC,شركة سلسال للمواد الزراعية,40%+4% w/w,Arysta Life India Limited,18/2/2024
+3561,Profenofos +Cypermethrin,Bingo -44% EC,عبد الحافظ الزراعيه,40% +4% W/W,Jia Shree Rasayan Udyog LTD,28/2/2027
+3569,Profenofos+ Cypermethrin,Profit EC,السابله للزراعه والتجارة,( 40 + 4 )% w\w,The Scientific Fertiliser Companu Private Limited,14/3/2027
+3661,Profenofos,Gronofos-50% SC,شركة جراسيا للصناعات الزراعية,50% W/V,شركة جراسيا للصناعات الزراعية,غير منتهي
+2425,Propetamphos 20%W/W,Safrotin MC,الاخصائيون لمكافحه افات الصحه العامه,20% W/V,NIPPON KAYAKU/ARYSTA LIFESCIENCE CO.,08/01/2018
+1260,quinalphos 25%w/w,quinatox EC,شركة عبد الحافظ الزراعية,25%w/v,ALLINDIA MEDICAL,20/10/2024
+1212,Temephos,Acibate -50% EC,مؤسسه صناعات الكيماويات والزراعيه,50% W/V,مؤسسه صناعات الكيماويات والزراعيه,6/3/2024
+1708,Temephos,Temebate -4% EC,شركة اليمامه لصناعه المواد الزراعيه,4% W/V,شركة اليمامه لصناعه المواد الزراعيه,07/07/2024
+2182,Temephos 50%,Temovap-50% EC,مصانع الادوية البيطرية والزراعية فابكو,50% W/V,VAPCO,27/09/2025
+2510,Temephos,Temecare-50% EC,مدماك لانتاج الاسمده الزراعية والبيطرية,50% W/V,مدماك لانتاج الاسمده الزراعية والبيطرية,11/11/2028
+2482,Temephos,Temcon -50% EC,الشركة الاردنية لانتاج المبيدات الحشرية,50% W/V,الشركة الاردنية لانتاج المبيدات الحشرية,غير منتهي
+3482,Temephos 50%w/v,Temebate-50% EC,اليمامه لصناعه المواد الزراعيه المحدودة,50% W/V,YAMAMMA,27/04/2026
+1252,Trichlorfon,Acifon -50% EC,مؤسسة صناعات الكيماويات الزراعية,50% W/V,مؤسسة صناعات الكيماويات الزراعية,8/5/2024
+4518,IMICYAFOS+,NEMAKICK,شركة اشراقة عمان لتجارة المواد الزراعية,30%W/W+,,21/02/2029
+4267,Fipronil,Termizona 2.5EC,اريزونا المتحدة للصناعات البتروكيماوية,2.5%W/V,ARIZONA,18/8/2026
+2398,Fipronil,Ronil -2.5% EC,مؤسسة صناعات الكيماويات الزراعية,2.5 %W/V,ACI,غير منتهي
+3696,Fipronil,Smart kill -Gel,مؤسسة حمودة للزراعة والتجاره,0.05% W/W,Sammi Glory Co.LTd/Ecoreen Co.LTD,15/5/2023
+3953,Imidacloprid 21.4%+fipronil6.6%w\v,Supertermite 28%SC,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية( كيميفيت),21.4%+6%SC,chemvet,19/8/2025
+4698,Fipronil+,Ultra Max,شركة الصالحي للتجارة والزراعة,0.05w/w+,,03/11/2029
+4740,Imidacloprid+Fipronil+,DUAL-BLOW,شركة مصانع المواد الزراعية/ اجروكم,23.96%+7.18%w\v +,اجروكم,28/01/2030
+4112,Fipronil 2.5% w/w,Eliminator,الدائرة الخضراء الزراعية,2.5% w/w,Zhejiang Sega Science and Technology Co.ltd,27/10/2026
+4109,Fipronil,Fiprowhite 5% SC,شركة جراسيا للصناعات الزراعية,5% w/v,Gerasa,غير منتهيه
+4089,Fipronil,Fiprogel,جراسيا للصناعات الزراعية,0.05%W/W,جراسيا للصناعات الزراعية,27/10/2026
+4102,Fipronil,Heranil Gel,شركة الدئرة الخضراء الزراعية,0.05%W/W,Heranba indusries limited,5/1/2027
+764,D-Allethrin,Little Max,مؤسسة الشرق الاقصى الصناعية,40 MG/MAT,مؤسسة الشرق الاقصى الصناعية,غير منتهي
+1017,prallethrin10 mg+ P.B.O 15%,Vape Mat,شركة صناعات مستحضرات التجميل والمواد الكيماوية,0.01+0.015% W/W,SUKHTIAN,09/02/2026
+1397,DeLtamethrin 1.5% +S.Bioallethrin 0.5% + P.B.O 5%,Altima-80 EC,مؤسسه صناعات الكيماويات الزراعيه,1.5+0.5+5%,ACI,04/06/2026
+1472,d-tetramethrin +prallethrin+d-phenothrin,Jiptox Aerosol,الاردنية الصناعية البتروكيماوية,0.1% + 0.075% +0.075 % W/W,JORDAN INDUSTRIAL PETROCHEMICAL,غير منتهي
+1088,prallethrin,vape liquid 60days,fumkilla,,,
+1573,Permethrin +S-Bioallethrin +P.B.O,Persuper 255 EC,مؤسسه صناعات الكيماويات الزراعيه,25 %+ 0.5% + 5% W/V,مؤسسه صناعات الكيماويات الزراعيه,23/10/2028
+1895,S_Bioallethrin -25 mg/mat,Acivap- mats,مؤسسة صناعات الكيماويات الزراعية,25 MG/MAT,ACI,غير منتهي
+2342,Cyfluthrin 1.5%+Bioallethrin 0.4%+P.B.O 5%W/V,Cyflon ULV,الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعي,1.5+0.4+5 % W/V,ATI,غير منتهي
+2490,S-bioallethrin + Deltamethrin + P.B.O,Biodell-17% ULV,شركة مصانع الادوية البيطرية والزراعية /فابكو,0.5%+1.5%+15%W/V,شركة مصانع الادوية البيطرية والزراعية /فابكو,غير منتهي
+1842,Bioallethrin 0.2%+permethrin0.1%+p.b.o0.5% w/w,Doom Aerosol,المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطر,0.2%+0.1%+0.5%w/w,CHEMVET.,غير منتهي
+3836,Bifenthrin 10% w/w,Biodor 10%-EC,شركة المدار الأخضر الزراعية,10%w/w,Indogulf CropSciences Ltd.,9/10/2024
+4106,Imidacloprid+Bifenthrin,Byimidachem SC,المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,5%+4%W/V,Chemvet,18/8/2026
+4450,Imidacloprid+Bifenthrin+,Rebound 32.45% SC,شركة البرج لصناعة المبيدات,10.8% w/w +21.65% w/w +,البرج لصناعة لمبيدات الزراعية والبيطرية,17/08/2028
+4034,Bifenthrin,Vision 25%Ec,شركة البرج لصناعة المبيدات الزراعية والبيطرية,25% w/v,Al-Burj,5/5/2026
+3794,Bifenthrin,Sherithrin-10% EC,شركة المستقبل للادوية الزراعية والبيطرية,10% W/W,Krishi Rasayan Export PVt.LTD,27/3/2024
+3105,Bifenthrin,Benethrin 10% EC,المتقدمة لصناعة الزراعية والعلاجات البيطريه(كيمفيت,10% W/V,Chemvet,غير منتهي
+2887,Bifenthrin 10% w/v,Bifenamin-10% EC,مصانع الادويه البيطريه والزراعيه(فابكو),10% W/V,VAPCO,غير منتهيه
+4665,Acetamipirid+Bifenthrin+,Bouclier,الفيروز للمواد الزراعية,22.7+27.3 W/W+,,13/02/2027
+2567,Bifenthrin-10% W/V,Talstar-10% EC,الاسمدة المتحدة يونيفرت,10% W/V,FMC CORPORATION,19/5/2024
+1397,DeLtamethrin 1.5% +S.Bioallethrin 0.5% + P.B.O 5%,Altima-80 EC,مؤسسه صناعات الكيماويات الزراعيه,1.5+0.5+5%,ACI,04/06/2026
+1573,Permethrin +S-Bioallethrin +P.B.O,Persuper 255 EC,مؤسسه صناعات الكيماويات الزراعيه,25 %+ 0.5% + 5% W/V,مؤسسه صناعات الكيماويات الزراعيه,23/10/2028
+1895,S_Bioallethrin -25 mg/mat,Acivap- mats,مؤسسة صناعات الكيماويات الزراعية,25 MG/MAT,ACI,غير منتهي
+2342,Cyfluthrin 1.5%+Bioallethrin 0.4%+P.B.O 5%W/V,Cyflon ULV,الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعي,1.5+0.4+5 % W/V,ATI,غير منتهي
+2490,S-bioallethrin + Deltamethrin + P.B.O,Biodell-17% ULV,شركة مصانع الادوية البيطرية والزراعية /فابكو,0.5%+1.5%+15%W/V,شركة مصانع الادوية البيطرية والزراعية /فابكو,غير منتهي
+1842,Bioallethrin 0.2%+permethrin0.1%+p.b.o0.5% w/w,Doom Aerosol,المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطر,0.2%+0.1%+0.5%w/w,CHEMVET.,غير منتهي
+1827,Deltamethrin 1.5%+Bioallethrin 0.5%w/v,Deltathrin,الشركه العربيه لصناعه المبيدات والادويه البيطريه(م,1.5+0.5%w/w,MOBEDCO,غير منتهي
+2076,Cyfluthrin-1.5%+Bioallethrin-0.4%+P.B.O-4%,Archer ULV,مؤسسةصناعات الكيماويات الزراعية,1.5%+0.4%+4% (w/v),ACI,23/12/2024
+3123,Cyfluthrin + Bioallethrin + P.B.O,Tricyloyam -ULV,اليمامة لصناعة المواد الزراعية المحدودة,1.5%+0.04%+5%W/V,اليمامة لصناعة المواد الزراعية المحدودة,26/12/2028
+1948,Cyfluthrin,Luthrate 5% EC,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو ),5% W/V,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو ),1/10/2023
+2155,Cyfluthrin 10% w/w,Fulurate-10% WP,اليمامة لصناعة المواد الزراعية المحدودة,10% W/W,YAMAMMA,25/5/2030
+2219,Cyfluthrin,Cyflore-5%EC,الشركة العربية لصناعةالمبيدات والادوية مبيدكو,5% W/V,MOBEDCO,24/11/2025
+2342,Cyfluthrin 1.5%+Bioallethrin 0.4%+P.B.O 5%W/V,Cyflon ULV,الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعي,1.5+0.4+5 % W/V,ATI,غير منتهي
+2331,Beta-Cyfluthrin 2.55W/V,Rempo 25 EC,مؤسسة صناعات الكيماويات الزراعية,2.5% W/V,ACI,غير منهيه
+1304,Beta-Cyfluthrin 2.5% w/v,Bulldock 025 EC,العربيه للمستحضرات الطبيه والزراعيه,2.5% W/V,BAYER,18/10/2018
+1878,Beta-cyfluthrin 2.5% w/v,Bullmac EC,شركة مدماك لانتاج الاسمده والادوية الزراعية والبيط,2.5% W/V,MEDMAC,27/07/2026
+2620,D_Allethrin0.3% + Cyfluthrin1.5% + P.B.O5%,Stinger-6.8% ULV,شركة مصانع الادوية البيطرية والزراعية (فابكو),0.3% +1.5% + 5% W/V,شركة مصانع الادوية البيطرية والزراعية (فابكو),26/08/2024
+3710,Imidacloprid+Betacyfluthrin,Shadow,مؤسسة صناعات الكيماويات الزراعية,24%+12%W/V,ACI,28/3/2028
+3858,Cyfluthrin -0.025% ww+,Pif Paf Flying Insect Killer,الشركة العربية للمبيدات الحشرية وملطفات الجو,0.025%+0.04%w/w,Sultanate of Oman,27/9/2029
+2331,Beta-Cyfluthrin 2.55W/V,Rempo 25 EC,مؤسسة صناعات الكيماويات الزراعية,2.5% W/V,ACI,غير منهيه
+1304,Beta-Cyfluthrin 2.5% w/v,Bulldock 025 EC,العربيه للمستحضرات الطبيه والزراعيه,2.5% W/V,BAYER,18/10/2018
+1878,Beta-cyfluthrin 2.5% w/v,Bullmac EC,شركة مدماك لانتاج الاسمده والادوية الزراعية والبيط,2.5% W/V,MEDMAC,27/07/2026
+4129,Beta-Cyfluthrin,Beta power,الحياة الزراعية,2.5% w/v,zhejiang Well-done chemical Co.ltd,15/12/2023
+4127,Imidacloprid+Beta-Cyfluthrin,Betacloprid 36%SC,معادن لإنتاج المبيدات والأسمدة,21%+10.5%W/W,Maaden,غير منتهي
+1756,Beta-Cyfluthrin,Jaguar-2.5% EC,شركه جعفر الكردي وشركاه,2.5% W/V,ZHEJIANG WELL-DONE/Ningbo Sungoy Agroscience Co.,2028/12/14
+2255,Beta-cyfluthrin 2.5%W/V,Dominant 2.5% ec,شركة البرج لصناعة المبيدات الزراعية والبيطرية,2.5% W/V,ALBURJ,14/08/2026
+2634,Beta-cyfluthrin 2.5% w/v,Belathrin 2.5%EC,شركة مصانع الادوية البيطرية والزراعية (فابكو),2.5% W/V,VAPCO,15/4/2030
+2935,Beta-Cyfluthrin,Bytop-2.5%EC,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات,2.5% W/V,ATI,غير منتهي
+3733,Imidacloprid +Beta-cyfluthrin,Wafy -7.5%SC,مؤسسة صناعات الكيماويات الزراعية,5% + 2.5% W/V,مؤسسة صناعات الكيماويات الزراعية,غير منتهي
+740,Lambda_cyhalothrin-5% W/V,Karate-5% EC,شركة المواد الزراعية (مقدادي),5% W/V,SYNGENTA,08/04/2018
+1341,Lambda-cyhalothrin 2.5% w/v,amigo_25 EC,مؤسسة صناعات الكيماويات الزراعية,2.5% W/V,ACI,09/10/2025
+1376,lambda-cyhalothrin-2.5% W/V,Tornado-2.5%EC,مصانع الادوية البيطرية والزراعية (فابكو),2.5% W/V,VAPCO,30/10/2025
+1413,lambda_cyhalothrin,phoenix_5%ec,شركةمصانع الادوية البيطرية والزراعية,5% W/V,VAPCO,30/10/2025
+1565,lambda-cyhalothrin,keratex -5% EC,مدماك لانتاج الاسمدة والادويةالزراعية,5% W/V,مدماك لانتاج الاسمدة والادويةالزراعية,18/11/2028
+1685,Lambda-Cyhalothrin 2.5%W/V,Mycon-2.5% EC,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,2.5% W/V,MEDMAC,14/9/2024
+1970,Lamdacyhalothrin 5%W/V,Lamdoc EC,شركة مجموعة منير سختيان,5% W/V,ASTRACHEM,09/01/2017
+1399,lambdacyhalothrin-5% W/V,lambdathrin-5% EC,الشركة العربية لصناعة المبيدات والادوية البيطرية,5% W/V,MOBEDCO,04/06/2026
+2204,LambdaCyhalothrin 5%w/v,Lamatin-5% EC,الاردنيه لانتاج المبيدات الحشريه والعلاجات الزراعي,5% W/V,ATI,9/11/2025
+2346,Thiamethoxam 14.1%+Lambdacyhalothrin 10.1%w/v,Engeo 247 ZC,الاتحاد الزراعي الاردني المحدودة المسؤولية,14.1+10.6% W/V,SYNGENTA,16/1/2027
+1,2,3,4,5,6,7
+2,3,4,5,6,7,8
+1341,Lambda-cyhalothrin 2.5% w/v,amigo_25 EC,مؤسسة صناعات الكيماويات الزراعية,2.5% W/V,ACI,09/10/2025
+1376,lambda-cyhalothrin-2.5% W/V,Tornado-2.5%EC,مصانع الادوية البيطرية والزراعية (فابكو),2.5% W/V,VAPCO,30/10/2025
+1565,lambda-cyhalothrin,keratex -5% EC,مدماك لانتاج الاسمدة والادويةالزراعية,5% W/V,مدماك لانتاج الاسمدة والادويةالزراعية,18/11/2028
+1685,Lambda-Cyhalothrin 2.5%W/V,Mycon-2.5% EC,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,2.5% W/V,MEDMAC,14/9/2024
+1852,Lambda-cyhalothrin 2.5 %w/v,Kung fu 2.5 EC,ليمامة لصناعة المواد الزراعية المحدودة,2.5% W/V,YAMAMMA,غير منتهيه
+3647,Thiamethoxam + Lambda-cyhalothrin,Lama -SC,مؤسسة صناعات الكيماويات الزراعية,14.1% + 10.6% W/V,مؤسسة صناعات الكيماويات الزراعية,غير منتهي
+3777,Thiamethoxam + Lambda-cyhalothrin,Hotspur-ZC,شركة سيجال للمواد الزراعية,12.62% + 9.49% (W/W),Hextar Chemicals SDN BHD,30/9/2029
+3871,Lambda-Cyhalothrin -12%WV,Matador-12%EC,الشركة الأردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,12%,الشركة الأردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,14/1/2030
+3861,Lambda-Cyhalothrin-5%w/v,Lamix-5%EC,شركة المدار لتجارة المواد الزراعية,5%,Crystal crop Protection Pvt.,18/12/2029
+3866,Lambda-Cyhalothrin,Warrior-10%w/w,شركة المواد الزراعية مقدادي,10%CS,Syngenta chemical B.V.,18/12/2029
+4162,Alphacypermethrin,Alphamaaden10EC,مصنع معادن لإنتاج المبيدات والأسمدة,10%W/V,مصنع معادن لإنتاج المبيدات والأسمدة,غير منتهيه
+757,Cypermethrin + Tetramethrin,Sheltox,الشركة الاردنية الصناعية البتروكيماوية,0.3 + 0.1% W/W,الشركة الاردنية الصناعية البتروكيماوية,18/1/2029
+1000,Cypermethrin-10% W/V,Cyprate-10% EW,الشركة العربيةلصناعةالمبيدات مبيدكو,10 W/V,MOBEDCO,10/12/2025
+1012,Cypermethrin 20%w/v,Cypermethrin-20% EC,مصانع الادوية البيطرية والزراعية (فابكو),20% W/V,VAPCO,03/02/2026
+1178,Alpha_Cypermethrin,Alfamed-5% EC,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,5% W/V,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,8/5/2024
+1185,Beta-Cypermethrin,Betamethrate -5% EC,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو),5% W/V,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو),8/5/2024
+1218,Alphacypermethrin,Alphayam- 5% EC,شركة اليمامه لصناعه المواد الزراعيه,5% W/V,شركة اليمامه لصناعه المواد الزراعيه,7/7/2029
+1213,Cypermethrin,CYPERMED-10% EC,مدماك لانتاج الاسمده والادوية الزراعية والبيطرية,10 % W/V,مدماك لانتاج الاسمده والادوية الزراعية والبيطرية,7/2/2029
+1301,cypermethrin 10% w/v,cypermac EC,مدماك لانتاج الاسمدة والادوية الزراعية,10 W/V,MEDMAC,23/6/2025
+1329,cypermethrin 12%+tetramethrin 4%+p.b.o 4%,maxima - 280 EC,مؤسسة صناعات الكيماويات الزراعية,12+4+4%,ACI,8/9/2025
+1,2,3,4,5,6,7
+2,3,4,5,6,7,8
+1974,Alpha-Cypermethrin,Sixer- 10% EC,شركة نبات للزراعة والتجارة,10% W/W,SULPHUR MILLS,6/5/2024
+2083,Alpha-cypermethrin,Alphachem- 10% EC,الشركة المتقدمة لصناعةالمبيدات الزراعية والعلاجات البيطرية,10%W/V,الشركة المتقدمة لصناعةالمبيدات الزراعية والعلاجات البيطرية,28/4/2029
+4023,Alpha-Cypermethrin,Shaolin 10% EC,شركة مجمع استرا الصناعي للاسمدة والمبيدات الزراعية,10% w/v,Astranova Tarim Tic.Ve Sanayi,9/8/2025
+3028,Alpha-cypermethrin,Tepcomaz-10%EC,المدار الاخضر الزراعية,10% w/w,Indogulf Cop Sciences,27/6/2028
+2367,Alpha-Cypermethrin,Newstar - 10% EC,المجموعه التخصصيه للادويه البيطريه,10%W/V,"NANJING RED SUN CO,/CHONGQUING SHINING FINE CHEM.",19/12/2024
+3520,Alpha-cypermethrin 5% w\v,Alphasol 5% EC,شركة الهلال الخصيب لانتاج الادوية البيطرية والزراع,5% W/V,شركة الهلال الخصيب لانتاج الادوية البيطرية والزراعية,19/10/2025
+1185,Beta-Cypermethrin,Betamethrate -5% EC,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو),5% W/V,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو),8/5/2024
+1084,Zeta-Cypermethrin-18% W/W,Fury EC,العربية لصناعة المبيدات والادوية,18% W/W,MOBEDCO,غير منتهي
+1460,D-Tetramethrin 0.1%+Cyphenothrin 0.3%w/w,Target Aerosol,الاردنيه الصناعيه البتروكيماويه,0.1+0.3%,JORDAN INDUSTRIAL PETROCHEMICAL,06/08/2026
+1076,D-Tetramethrin 0.15%+Cyphenothrin 0.15%w/w,Mubeed-2000,الاردنية للصناعية البتروكيماوية,0.15+0.15%,JORDAN INDUSTRIAL PETROCHEMICAL,02/08/2026
+963,DELTAMETHRIN-2.5% W/V,DELTABAZ-2.5% EC,مؤسسة صناعات الكيماويات الزراعية,2.5% W/V,ACI,20/3/2030
+1140,Deltamethrin,DeItamac-2.5% EC,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,2.5% W/V,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,19/11/2028
+1146,Deltamethrin,Deltasuper- ULV,الشركة العربية لصناعة المبيدات والادوية البيطرية/ مبيدكو,1.25% W/V,الشركة العربية لصناعة المبيدات والادوية البيطرية/ مبيدكو,7/1/2029
+1210,Deltamethrin,Deltayam -2.5 %EC,شركة اليمامه لصناعه المواد الزراعيه,2.5% W/V,شركة اليمامه لصناعه المواد الزراعيه,26/6/2029
+1271,deltamethrin 2.5% w/v,delete EC,شركة مصانع الادوية البيطرية والزراعية,2.5% W/V,VAPCO,3/5/2030
+1322,deltamethrin 2.8% w/v,deltarin 2.8 EC,شركة مصانع الادوية البيطرية والزراعية,2.5% W/V,VAPCO,15/05/2025
+1397,DeLtamethrin 1.5% +S.Bioallethrin 0.5% + P.B.O 5%,Altima-80 EC,مؤسسه صناعات الكيماويات الزراعيه,1.5+0.5+5%,ACI,04/06/2026
+1023,Deltamethrin 1.5%w/v,K-Othrin 15 EC,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات,1.5% W/V,ATI,03/05/2021
+1099,Deltamethrin 2.5%w/w,Terminator 2.5% WP,مصانع الادوية البيطرية والزراعيه فابكو,2.5% W/,VAPCO,غير منتهيه
+1228,Deltamethrin,K_othrine -25% SC,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,2.5% W/V,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,02/03/2024
+1,2,3,4,5,6,7
+2,3,4,5,6,7,8
+1121,Esfenvalerate,Fast-5% EC,(مصانع الادوية البيطرية والزراعية (فابكو,5% W/V,VAPCO,غير منتهي
+1711,Esfenvalerate 2.5%w/v,Suncidin ULV,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,2.5%,MEDMAC,11/04/2025
+2789,Esfenvalerate,Esfenatin-20EC,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات,20%W/V,ATI,غير منتهية
+1880,Etofenprox 30% w/v,Boxer-30% EC,شركة مصانع الادوية البيطرية والزراعية (فابكو),30% W/V,VAPCO,01/07/2026
+1351,fenpropathrin 10% w/v,vapcotol_10% EC,شركة مصانع الادوية البيطرية والزراعية,10% W/V,VAPCO,20/2/2025
+1888,Fenpropathrin 10% w/v,Fenprodate 10% EC,العربيه لصناعه المبيدات والادويه البيطريه(مبيدكو),10%W/V,Mobedco,غير منتهيه
+792,Fenvalerate-20%W/V,Vapcocidin-20%EC,شركة مصانع الادوية البيطرية والزراعية(فابكو),20% W/V,VAPCO,22/08/2026
+1152,Fenvalerate 20%W/V,Yamacidin 20 EC,اليمامه لصناعة المواد الزراعية المحدودة,20% W/V,YAMAMMA,غير منتهية
+1085,Fenvalerate,Fenrate- 20% EC,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو ),20% W/V,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو ),28/10/2028
+1121,Esfenvalerate,Fast-5% EC,(مصانع الادوية البيطرية والزراعية (فابكو,5% W/V,VAPCO,غير منتهي
+1437,Fenitrothion-25% + Fenvalerate-5% W/V,Fenikill_30%EC,شركة مصانع الادوية البيطرية والزراعية,25+5% W/V,VAPCO,03/09/2026
+1136,Fenvalerate,Valerate -20% EC,شركة مدماك لإنتاج الاسمدة والادوية الزراعيه والبيطرية,20% W/V,شركة مدماك لإنتاج الاسمدة والادوية الزراعيه والبيطرية,3/1/2029
+1314,fenvalerate,fenyam-20%ec,اليمامة لصناعة المواد الزراعية المحدودة,20% W/V,YAMAMMA,11/06/2025
+1711,Esfenvalerate 2.5%w/v,Suncidin ULV,مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,2.5%,MEDMAC,11/04/2025
+2079,Fenvalerate,Agrocidin -20% EC,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,20% W/V,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,12/5/2024
+1991,Fenvalerate-10% W/V,Agrocidin-10% EC,شركة المتقدمة لصناعة المبيدات الزراعية,10% W/V,شركة المتقدمة لصناعة المبيدات الزراعية.,7/11/2024
+1460,D-Tetramethrin 0.1%+Cyphenothrin 0.3%w/w,Target Aerosol,الاردنيه الصناعيه البتروكيماويه,0.1+0.3%,JORDAN INDUSTRIAL PETROCHEMICAL,06/08/2026
+1076,D-Tetramethrin 0.15%+Cyphenothrin 0.15%w/w,Mubeed-2000,الاردنية للصناعية البتروكيماوية,0.15+0.15%,JORDAN INDUSTRIAL PETROCHEMICAL,02/08/2026
+3112,D-Phenothrin 11%W/W,Freedom11MicroE-ME,المركز العربي لمكافحة الحشرات و القوارض,,,
+1017,prallethrin10 mg+ P.B.O 15%,Vape Mat,شركة صناعات مستحضرات التجميل والمواد الكيماوية,0.01+0.015% W/W,SUKHTIAN,09/02/2026
+1472,d-tetramethrin +prallethrin+d-phenothrin,Jiptox Aerosol,الاردنية الصناعية البتروكيماوية,0.1% + 0.075% +0.075 % W/W,JORDAN INDUSTRIAL PETROCHEMICAL,غير منتهي
+1088,prallethrin,vape liquid 60days,fumkilla,,,
+3740,Prallethrin,Vape Mat -15,شركة صناعة مستحضرات التجميل والموا د الكيماوية المنزلية (سختيان),15 mg/Mat,شركة صناعة مستحضرات التجميل والموا د الكيماوية المنزلية (سختيان),غير منتهي
+1660,Prallethrin 10%mg/mat,Tak-Mats,الاردنيه الصناعيه البتروكيماويه,10 MG/MAT,JORDAN INDUSTRIAL PETROCHEMICAL,17/10/2024
+2129,Prallethrin-10 mg+P.B.O-15mg,ATOM-B,شركةمستحضرات التجميل والمواد الكيماوية سختيان,10+15mg/mat,SUKHTIAN,13/06/2020
+3292,Sumithrin +Prallethrin,Raid Odorless flying insect killer Aerosol,شركة يون نيبال العامة,0.136%+ 0.109%W/W,Johnson Wax,22/1/2028
+2988,Prallethrin 1.6%W/W,Raid Liquid Mosquito LIQUID,الشركة العربية الحديثة للتوزيع,1.6%,JOHNSON,24/03/2018
+3516,Prallethrin,Raid Mosquito Killer (37 Nights) Protection,الشركة العربية الحديثة للتوزيع,1.37% w/w,Johnson Wax Egypt,13/11/2028
+2810,Prallethrin,Vape Iiquid Refill,شركه صناعه مستحضرات التجميل والمواد,1.33%W/V,شركه صناعه مستحضرات التجميل والمواد,غير منتهي
+757,Cypermethrin + Tetramethrin,Sheltox,الشركة الاردنية الصناعية البتروكيماوية,0.3 + 0.1% W/W,الشركة الاردنية الصناعية البتروكيماوية,18/1/2029
+759,Tetramethrin + Permethrin + PBO,Fantom-Aerosol,الاردنية الصناعية البتروكيماوية,0.25% + 0.25%+ 1.25% (W/W),الاردنية الصناعية البتروكيماوية,6/8/2024
+768,Tetramethrin-0.2%+Dichlorvos-0.5%+PBO-1% W/W,Tetox Fly Aerosol,الشركة الاردنية الصناعيه البتروكيماوية,0.2%+0.5%+1%ًW/W,لشركة الاردنية الصناعيه البتروكيماوية,8/6/2025
+1044,Permethrin+Tetramethrin+ P.B.O 5%+2%+8%W/V,Perbaz-150 ULV,مؤسسه صناعات الكيماويات الزراعيه,2+5+8% W/V,ACI,01/03/2026
+1329,cypermethrin 12%+tetramethrin 4%+p.b.o 4%,maxima - 280 EC,مؤسسة صناعات الكيماويات الزراعية,12+4+4%,ACI,8/9/2025
+1365,permethrin 9.75 %+tetramethrin1.5%+ P.BO11.25% w/v,tennin-260 EC,مؤسسة صناعات الكيماويات الزراعية,1.5+9.75+11.25% W/V,ACI,18/12/2025
+895,permethrin 9.75%+tetramethrin 1.5%+P.B.O 11.25%W/V,phinco-T22 EC,مصانع الادوية البيطرية والزراعيه (فابكو),1.5+9.75+11.25%W/V,VAPCO,غير منتهية
+1417,lambdacyhallothrin1%+Tetramethrin 4%+piperonyl butoxide5%,tornado_forte_ec,شركة مصانع الادوية البيطرية والزراعية,1+4+5%w/v,VAPCO,17/09/2026
+1460,D-Tetramethrin 0.1%+Cyphenothrin 0.3%w/w,Target Aerosol,الاردنيه الصناعيه البتروكيماويه,0.1+0.3%,JORDAN INDUSTRIAL PETROCHEMICAL,06/08/2026
+1472,d-tetramethrin +prallethrin+d-phenothrin,Jiptox Aerosol,الاردنية الصناعية البتروكيماوية,0.1% + 0.075% +0.075 % W/W,JORDAN INDUSTRIAL PETROCHEMICAL,غير منتهي
+895,permethrin 9.75%+tetramethrin 1.5%+P.B.O 11.25%W/V,phinco-T22 EC,مصانع الادوية البيطرية والزراعيه (فابكو),1.5+9.75+11.25%W/V,VAPCO,غير منتهية
+1981,Permethrin 9.75%+Tetramethrin 1.5%w/v,Tetramin EC,مدماك لانتاج الاسمدة والادويةالزراعية والبيطرية,9.75+1.5%w/v,MEDMAC,19/5/2019
+3655,Transfluthrin + Imiprothrin + Permethrin,Jumbo Vape Aerosol,شركة صناعة مستحضرات التجميل والمواد الكيماوية المنزلية ( سختيان ),0.06% +0.05%+ 0.22% W/W,شركة صناعة مستحضرات التجميل والمواد الكيماوية المنزلية ( سختيان ),غير منتهي
+3754,Transfluthrin + Imiprothrin,Pif Paf All Insect Killer,الشركة الاردنية لتسويق وتوزيع الأصناف العالمية,0.04% +0.05% W/W,العمانية للمبيدات الحشرية وملطفات الجو,18/7/2028
+4162,Alphacypermethrin,Alphamaaden10EC,مصنع معادن لإنتاج المبيدات والأسمدة,10%W/V,مصنع معادن لإنتاج المبيدات والأسمدة,غير منتهيه
+757,Cypermethrin + Tetramethrin,Sheltox,الشركة الاردنية الصناعية البتروكيماوية,0.3 + 0.1% W/W,الشركة الاردنية الصناعية البتروكيماوية,18/1/2029
+759,Tetramethrin + Permethrin + PBO,Fantom-Aerosol,الاردنية الصناعية البتروكيماوية,0.25% + 0.25%+ 1.25% (W/W),الاردنية الصناعية البتروكيماوية,6/8/2024
+959,PERMETHRIN-0.5% W/W,PERSECT-0.5%DP,شركة مصانع الادوية البيطرية فابكو,0.5% W/W,VAPCO,06/12/2025
+1000,Cypermethrin-10% W/V,Cyprate-10% EW,الشركة العربيةلصناعةالمبيدات مبيدكو,10 W/V,MOBEDCO,10/12/2025
+998,PERMETHRIN-25% W/V,KAFIL-25%EC,مؤسسة صناعات الكيماويات الزراعية,25% w/v,ACI,27/08/2025
+1012,Cypermethrin 20%w/v,Cypermethrin-20% EC,مصانع الادوية البيطرية والزراعية (فابكو),20% W/V,VAPCO,03/02/2026
+1044,Permethrin+Tetramethrin+ P.B.O 5%+2%+8%W/V,Perbaz-150 ULV,مؤسسه صناعات الكيماويات الزراعيه,2+5+8% W/V,ACI,01/03/2026
+1131,Permethrin + Esbiothrin,Permatin - EC,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,25% +0.5% w/v,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,15/11/2028
+1178,Alpha_Cypermethrin,Alfamed-5% EC,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,5% W/V,شركة مدماك لانتاج الاسمدة والادويه الزراعيه والبيطريه,8/5/2024
+1,2,3,4,5,6,7
+2,3,4,5,6,7,8
+1254,acetamiprid 20% w/w,Mospilan 20 SP,الاشراق للزراعة والتجارة,20%W/W,NIPPON SODA/MITSUI,18/8/2029
+1744,Acetamiprid-20% W/W,Access-20% SP,العطاء الزراعية,20%W/W,JIANGSU KESHENG GROUP CO / AGRODRAGON,26/3/2029
+2382,Acetamiprid,Active-20% SP,شركه سلسال للمواد الزراعيه,20%W/W,ARYSTA LIFE SCIENCE,25/04/2027
+2404,Acetamiprid,Aciprid- 20 % SL,مؤسسة صناعات الكيماويات الزراعيه,20%W/V,ACI,غير منتهي
+1795,Acetamiprid 20% w/w,Cezar SP,مدماك لانتاج الاسمده والادوية الزراعية والبيطرية,20%W/W,MEDMAC,01/07/2026
+2499,Acetamiprid,Hospilan - 20 SP,المشورة الزراعيه,20%W/W,IPROCHEM,29/1/2027
+2441,Acetamiprid,Acetachem -20% SL,المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية (كيمفت),20%W/V,المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية (كيمفت),غير منتهي
+2413,Acetamiprid,Impala-20% SL,مدماك لانتاج الاسمدة والادوية الزراعية والبيطرية,20%W/V,MEDMAC,غير منتهي
+2803,Acetamiprid 20%W/W,Platinum-SP,عبد الحافظ الزراعية,20% W/W,AMICO PESTICIDE LTD,31/10/2026
+3772,ACETAMIPRIDE,Picador-20% SL,المجموعة التخصصية للادوية البيطرية والزراعية,20% W/W,Shandong United Pesticide Industry Co.LTD/Chongqing Shining Fine Chemicals Co.LTD,30/7/2025
+1,2,3,4,5,6,7
+4749,Clothianidin+Pyriproxyfen+,KENJUTSU,شركة مصانع المواد الزراعية/ اجروكم,3.2% w/v+3.9% w/v+,شركة مصانع المواد الزراعية/ اجروكم,20/02/2030
+4413,Clothianidin+,Top Guard,قطفة الزراعية,50% w/w+,,15/03/2028
+4757,Clothianidin+,TERA,مؤسسة صناعات الكيماويات الزراعية/ سلامة الحياري,50% w/w+,مؤسسة صناعات الكيماويات الزراعية,28/01/2030
+3595,Clothianidin,Contreras -50% WG,شركة العلوم لصناعة الادوية والاسمدة الزراعية,50% W/W,Agrisciences Ltd,13/6/2022
+3808,Dinotefuran,Shiraz-20% SG,مؤسسة زيتا للزراعة والتجارة,20% W/W,"Nanjing Red Sun Co.,LTD/ Chico Crop Science Co.,lTD",8/2/2023
+3846,Dinotefuran,Gebei Safari-20SG,مؤسسة مسك الزراعية,20%w/w,Hebei Veyong Bio-chemical co.LTD,19/12/2022
+3846,Dinotefuran,Hebei Safari-20SG,مؤسسة مسك الزراعية,20%w/w,Hebei Veyong Bio-chemical co.LTD,19/12/2027
+4233,Dinotefuran,Drow,فالكون الزراعية,40%WW,Zhejiang Sega Science &Technology Co.Ltd.,21/5/2025
+3154,Dinotefuran,Dantel -20% WP,شركة مدماك لانتاج الاسمدة والادوية الزراعية والبيطرية,20% W/W,شركة مدماك لانتاج الاسمدة والادوية الزراعية والبيطرية,21/1/2029
+3414,Dinotefuran 10%W/V,Turan_10% SL,مؤسسة صناعات الكيماويات الزراعية,10% W/V,ACI,22/02/2026
+4628,Dinotefuran+,FURAM,شركة الكروم للزراعة والتجارة,20%w/w+,,23/07/2029
+4695,Dinotefuran+,VENDOR 20% SG,شركة اشراقة عمان لتجارة المواد الزراعية,20%W/W+,,08/02/2028
+3976,Imidacloprid,Nuvador-35%SC,شركة النخبة لصناعة الاسمدة الزراعية والادوية البيطرية (نيوفاك),35%(w/v),Nuvac,14/7/2030
+1199,Imidacloprid 20%,Commando -20% SL,شركة مصانع الادوية البيطرية والزراعية ( فابكو),20% W/V,شركة مصانع الادوية البيطرية والزراعية ( فابكو),17/6/2029
+1200,Imidacloprid,Acochem-25%WP,شركة مصانع الادوية البيطرية والزراعية ( فابكو),25% W/W,شركة مصانع الادوية البيطرية والزراعية ( فابكو),27/6/2029
+1247,imidacloprid 20% w/v,comodor SL,مدماك لانتاج الاسمدة والادوية الزراعية والبيطرية,20% W/V,MEDMAC,5/12/2024
+1569,imidacloprid,Acidor -20 % SL,مؤسسة صناعات الكيماويات الزراعية,20% W/V,مؤسسة صناعات الكيماويات الزراعية,29/4/2029
+1584,Imidacloprid 75%,Vaplex-75% WP,شركة مصانع الادوية البيطرية والزراعية/فابكو,75% W/W,شركة مصانع الادوية البيطرية والزراعية/فابكو,30/5/2029
+1684,Imidacloprid,Imadate-70% WP,الشركة العربيه لصناعه المبيدات والادويه البيطريه (مبيدكو),70% W/W,الشركة العربيه لصناعه المبيدات والادويه البيطريه (مبيدكو),20/07/2029
+1726,Imidacloprid 70%w/w,Commando-70% -WS,شركة مصانع الادوية البيطرية والزراعية,70% W/W,VAPCO,17/1/2030
+1619,Imidacloprid 5%,Commando-5% GR,مصانع الادوية البيطرية والزراعية/ فابكو شركة,5% W/W,مصانع الادوية البيطرية والزراعية/ فابكو شركة,12/3/2029
+1964,Imidacloprid,Winder -20% SL,مؤسسة كريستال للزراعة والتجارة,20% W/V,Jiangsu Jianshen Biology Agro Chemical Co.LTD / ZHENJIANG AGREEN CO.,9/3/2024
+1,2,3,4,5,6,7
+2,3,4,5,6,7,8
+4393,Nitenpyram+,Nitrofly 10 % SL,مؤسسة الوفق الزراعية,10%w/v+,-,01/08/2028
+4462,Nitenpyram+,LUMI MAGIC,المدخلات للخدمات الزراعية,10% w/v+,,22/09/2025
+4147,Nitenpyram 10%w/v,pyram 10%sl,القوافل الصناعية الزراعية,10%w/v,شركة القوافل الصناعية الزراعية,غير منتهي
+3924,Nitenpyram 10%w/v,Fly die 10%SL,شركة قمر المملكة لتجارة المواد الزراعية,10%w/v,Beijing Multigrass Formulation Co.Ltd.,24/02/2029
+4664,Nitenpyram+,DO IT 10% SL,قطفة الزراعية,10%w/v+,.,11/06/2025
+4443,Nitenpyram+,FLYRAM 10% SL,الشركة العربية لصناعة المبيدات/مبيدكو- المكاتب,10% (W/V)+,العربية لصناعة المبيدات و الأدوية البيطرية-مبيدكو,12/09/2028
+3598,Nitenpyram,Nitenole-10% SL,شركة الدائرة الخضراء الزراعية,10% W/V,Shandong United Pesticide Industries/Shandong Sino agri united biotechnology co,12/6/2025
+4465,Nitenpyram+,Tripsbye 10% AS,شركة اشراقة عمان لتجارة المواد الزراعية,10%w/v+,,09/04/2027
+2378,Thiacloprid,Pyro-48% SC,مدماك لانتاج الاسمدة والادوية الزراعية والبيطريه,48% W/V,MEDMAC,غير منتهي
+2474,Thiacloprid 48%,Destroyer 48% SC,شركة مصانع الادوية البيطرية والزراعية /فابكو,48% W/V,شركة مصانع الادوية البيطرية والزراعية /فابكو,غير منتهي
+3787,Deltamethrin + Thiacloprid,Deltasave- 17% OD,العلوم لصناعة الأدوية والاسمدة الزراعية,2%+ 15% (W/V),Agrisciences Ltd,11/7/2028
+3879,Thiacloprid,Aspress-48%SC,شركة النخبة لصناعة الأسمدة الزراعية والظادوية البيطرية (نيوفاك),48%w/v,Nuvac,30/10/2024
+3957,Thiacloprid 40%w/w,Amve-Prid 40%SC,شركة كريستال الزراعية,40%w/w,Hebi Guanlong Agrochemical co.Ltd.,14/11/2026
+3879,Thiacloprid,Aspress-48%SC,شركة النخبة لصناعة الأسمدة الزراعية والظادوية البيطرية (نيوفاك),48%w/v,Nuvac,30/10/2024
+1840,Thiacloprid,Calypso-48 % SC,العربية للمستحضرات الطبية والزراعية,48% W/V,Bayer Crop Science AG,30/4/2022
+2783,Deltamethrin+Thiacloprid( 1+10)%W/V,Proteus-110 OD,العربيه للمستحضرات الطبيه والزراعيه,1+10%w/v,BAYER CROPSCIENCE,19/04/2021
+2922,Thiacloprid,Esatto-48%SC,البرج لصناعة المبيدات الزراعية والبيطرية,48% W/V,ALBURJ,غير منتهيه
+3362,Thiacloprid 48% w/v,Casper-48% SC,مؤسسه الخضراء للخدمات الزراعيه,48% W/V,Jiangsu Flag Chemical Industry Co.,19/10/2029
+2346,Thiamethoxam 14.1%+Lambdacyhalothrin 10.1%w/v,Engeo 247 ZC,الاتحاد الزراعي الاردني المحدودة المسؤولية,14.1+10.6% W/V,SYNGENTA,16/1/2027
+2493,Thiamethoxam,Optigard Aut Gel Bait,المركز العربي لمكافحة الحشرات,0.01% W/W,SYNGENTA,26/10/2018
+3647,Thiamethoxam + Lambda-cyhalothrin,Lama -SC,مؤسسة صناعات الكيماويات الزراعية,14.1% + 10.6% W/V,مؤسسة صناعات الكيماويات الزراعية,غير منتهي
+3638,Thiamethoxam,Kavara-25% WDG,شركة الاشراق للزراعة والتجارة,25% W/W,"Jiangsu Subin Agrochemical Co., Ltd/Zhenjiang Agreen Co., LTD",20/6/2023
+0,thiamethoxam 25% w/w,madoxam WG,المدار لتجارة المواد الزراعية,,,
+3635,Thiamethoxam,Greeno- Sam-25% WDG,المدار الأخضر,25% W/W,Indogulf Crop Sciences LTD,22/11/2022
+3644,Thiamethoxam 10%,Rannan -10% WDG,فابكو,10% W/W,Vapco,غير منتهي
+3682,Thiamethoxam,Madoxzam-25% WDG,المدار لتجارة المواد الزراعية,25% W/W,Crystal Crop Protection PVT.LTd,21/3/2028
+3745,Lambdacyhalothrin + Thiamethoxam,Thiothrin -24.7 SC,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,10.6%+14.1%W/V,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,غير منتهي
+3777,Thiamethoxam + Lambda-cyhalothrin,Hotspur-ZC,شركة سيجال للمواد الزراعية,12.62% + 9.49% (W/W),Hextar Chemicals SDN BHD,30/9/2029
+1,2,3,4,5,6,7
+2,3,4,5,6,7,8
+3504,Sulfoxaflor -24% w\w,Closer -24% SC,شركة المواد الزراعيه(مقدادي),24% W/V,Corteva Agriscience SaS.,31/12/2025
+2676,Spinetoram-120 SC,Radiant -120SC,شركة المواد الزراعية (مقدادي),11.7% W/V,Dow AgroSiences,19/07/2025
+4679,Spinetoram+,DENGERE 250 WG,شركة الورقة الزرقاء الزراعية للاسمدة والمبيدات,25%w\w+,,01/10/2029
+2676,Spinetoram-120 SC,Radiant -120SC,شركة المواد الزراعية (مقدادي),11.7% W/V,Dow AgroSiences,19/07/2025
+3625,Methoxyfenozide + Spinetoram,Uphold -360 SC,شركة المواد الزراعية (مقدادي),30% + 6% ( W/V ),Dow Agrosciences,18/7/2027
+4346,Spinosad,Sago,شركة جعفر الكردي وشركاه,48% w/v,United Bio-Shanghai and Shanghai pharmaceutical (xiayi) Co. ltd.,27/4/2029
+4311,Spinosad,Strict 48%SC,البرج لصناعة المبيدات الزراعية والبيطرية,48%W/V,Alburj,غير منتهي
+4149,Spinosad,Netgrowy 240 SC,الورقة الزرقاء للأسمدة والمبيدات,24%W/V,Agrobest grup tarim,8/10/2027
+4149,Spinosad,Netgrowy 240 SC,الورقة الزرقاء للأسمدة والمبيدات,24%W/V,Agrobest grup tarim,8/10/2027
+4678,Spinosad+,Sindek,مؤسسة الأرض الخضراء,48% +,,30/08/2027
+4184,Spinosad,Sapator 48%SC,الأمتياز للمواد الزراعية,48%W/V,Hebei Veyong Bio-Chemical Co.Ltd.,30/7/2025
+4160,Spinosad,Spinsect24%SC,مصنع معادن لإنتاج المبيدات والأسمدة,24%W/V,مصنع معادن لإنتاج المبيدات والأسمدة,غير منتهي
+4278,Spinosad,Oread,شركة القدرة لتجارة المواد الزراعية,48%W/V,Hectas ticaret T.A.S,5/10/2027
+4128,Spinosad,Spinochem -48% SC,المتقدمة لصناعة المبيدات الزظراعية والعلاجات البيطرية (كيمفيت),48% w/v,Chemvet,غير منتهيه
+1845,Spinosad(spinosionAandD) 22.8% w/v,Spintor_240 SC,شركة المواد الزراعية (مقدادي),22.8% W/W,Corteva Agriscience SaS.,17/07/2026
+2971,Abamectin,Supervertic Plus-8.4% SC,الشركة العربية لصناعة المبيدات والادوية البيطرية,8.4%W/V,Mobedco,غير منتهي
+4173,Abamectin,Revectin5%EC,اكاسيا لتجارة الأسمدة,5%W/V,yifan Biotechnology group co ltd,15/3/2023
+912,abamectin 1.8% w/v,vertimec EC,المواد الزراعيه (مقدادي),1.8%W/V,SYNGENTA,31/5/2027
+1400,Abamectin-1.8% W/V,Medamec-1.8% EC,شركة مدماك لانتاج الاسمده والادوية الزراعية والبيط,1.8%W/V,MEDMAC,02/07/2026
+876,Abamectin,Spiderchem-1.8% EC,مصانع المواد الزراعيه والكيماويه(اجروكيم),1.8%W/V,AGROCHEM,غير منتهيه
+1309,Abamectin,Abamectin -1.8% EC,الشركه العربيه لصناعه المبيدات والادويه البيطرية ( مبيدكو),1.8%W/V,الشركه العربيه لصناعه المبيدات والادويه البيطرية ( مبيدكو),23/6/2030
+1657,Abamectin,Abamex -1.8% EC,شركة مصانع الادوية البيطرية والزراعية فابكو,1.8%W/V,شركة مصانع الادوية البيطرية والزراعية فابكو,06/08/2029
+2243,Abamectin,Samcotin-1.8%EC,البرج لصناعة المبيدات الزراعية والبيطرية,1.8%W/V,البرج لصناعة المبيدات الزراعية والبيطرية,26/04/2026
+1284,Abamectin 1.8% w/v,Acimic EC,مؤسسه صناعات الكيماويات الزراعيه,1.8%W/V,ACI,15/6/2030
+2500,Abamectin,Hisan Vertic-1.8% EC,شركة الجنان الزراعيه,1.8% W/V,Synuwill Co. Ltd.,3/12/2023
+1,2,3,4,5,6,7
+2,3,4,5,6,7,8
+2358,emamectin benzoate,proclaim 05 sg,المواد الزراعية مقدادي,5% W/W,SYNGENTA,14/05/2017
+2358,Emamectin Benzoate 5% w/w,Proclaim 5 SG,المواد الزراعية مقدادي,,,
+2169,Emamectin Benzoate 2% w/v,Emacide-2% EC,المجموعه التخصصيه للادويه البيطريه والزراعيه,2% W/V,ZHEJIANG QIANJIANG CHONGQING SHINING,07/09/2024
+2504,Emamectin Benzoate,Ematin-5.7% WG,شركة جهاد ياسين الزراعية وشركاه,5% W/W,JINGBO AGROCHEMS Technology Co.LTD/ GOLDEN HARVEST CHEMICAL.CO. LTD,26/10/2023
+2446,Emamectin Benzoate,Promed -5%SG,شركة مدماك لانتاج الاسمدةوالادوية الزراعية,5% W/W,شركة مدماك لانتاج الاسمدةوالادوية الزراعية,غير منتهي
+2709,Emamectin Benzoate,Marloon_M3 WDG,شركة عبد الحميد عبد الحافظ الزراعية,5.7%W/W,ZHEJIANG SHENGHUA BIOK BIOLOGY/JIANGSU INTER-CHINA GROUP CORP.,7/10/2027
+2754,Emamectin Benzoate 5%w/v,Benzomectin-EC,المتقدمه لصناعه المبيدات الزراعيه والعلاجات البيطر,5% W/V,CHEMVET,09/12/2025
+3809,Emamectin Benzoate,Sinjar-5.7% WDG,مؤسسة زيتا التجارية,5.7% W/W,Hengshui Heng Wei Chemical Co.ltd/Chico Crop Science Co.ltd,16/12/2026
+3965,Emamectin Benzoate 5%ww,Emzet 5%SG,شركة نبات للزراعة والتجارة,5%ww,Sulphur Mills LTD.,25/6/2030
+3744,Emamectin Benzoate,Emazoar-5.7% WG,شركة نعيم الحافظ وشريكه,5.7% W/W,Wuxi Xinan Pesticide Co/ Shanghai Highway import and export Co.ltd,11/5/2022
+2277,Milbemectin,Milbeknock-1% EC,المواد الزراعيه(مقدادي),1% W/V,MITSUI CHEMICAL INC/SUMIT AGRO INTER. CO,20/7/2030
+3587,Milbemectin 1% w/v,Milger 1 EC,شركه جراسيا للصناعات الزراعيه,1% W/V,Gerasa,14/3/2022
+4027,"S-methoprene + Piperonyl Butoxide +Chrysanthemum cinerariae folium , ext",Protect Spray,شركة الظاهر للخدمات الزراعية,0.28% + 0.36% + 0.18% (w/w),Babolna Bio Ltd,16/6/2026
+4421,S-methoprene+,BIOPREN 4GR,شركة الظاهر للخدمات الزراعية,1.605 W/W+,-,05/10/2028
+4659,Imidacloprid+S-methoprene+,MAGNUM GEL COCKROACHES IGR,الادارة المتكاملة لخدمات الصحة العامة,2.15 % W/W+0.5 % W/W+,,31/12/2025
+4028,S-methoprene+p.b.o +Pyrethrin,Biopren EC,شركة الظاهر للخدمات الزراعية,6.43%+10.173%+4.81%(w/w),Bablona Bio Ltd,16/2/2026
+4658,Imidacloprid+S-methoprene+,MAGNUM GEL ANTS IGR,الادارة المتكاملة لخدمات الصحة العامة,0.01% W/W+0.08% W/W+,,31/12/2025
+2061,Pyriproxyfen,Aciprox-10 % EC,مؤسسة صناعات الكيماويات الزراعية,10% W/V,مؤسسة صناعات الكيماويات الزراعية,11/1/2029
+2762,Pyriproxyfen 10%W/V,Polestar-10%EC,كريستال للزراعة والتجارة,10% W/V,PARIJAT INDUSTRIES PVT LTD,17/03/2026
+4749,Clothianidin+Pyriproxyfen+,KENJUTSU,شركة مصانع المواد الزراعية/ اجروكم,3.2% w/v+3.9% w/v+,شركة مصانع المواد الزراعية/ اجروكم,20/02/2030
+4279,PYRIPROXYFEN,AGROXEN -10% EC,(شركة مصانع الأدوية البيطرية والزراعية ( فابكو,10% W/V,VAPCO,غير منتهي
+4432,Pyriproxyfen+,Mobixen 11.23% EC,الشركة العربية لصناعة المبيدات/مبيدكو- المكاتب,11.23% (W/W)+,العربية لصناعة المبيدات و الأدوية البيطرية-مبيدكو,03/10/2028
+4331,pyriproxyfen,Makmiral 100 EC,شركة الرفاهية الزراعية,10%w/v,Clone Kimya Tarim,11/5/2028
+2816,Pyriproxyfen,Fentox-10%EC,شركةالبرج لصناعةالمبيدات,10% W/V,ALBURJ,21/06/2026
+3385,Pyriproxyfen 10%W/V,Pyroxen-10%EC,شركه مصانع الادويه البيطريه والزراعيه(فابكو),10% W/V,VAPCO,19/10/2025
+3392,Pyriproxyfen 10%w/w,Brai-10%EC,شركة الإمتياز للمواد الزراعية,10%W/W,LAINCO,31/1/2026
+4068,pyriproxyfen,Adfenal 10% EC,شركة النخبة لصناعة الاسمدة الزراعية والادوية البيطرية (نيوفاك),10% w/v,Nuvac,غير منتهي
+2207,Methyl bromide+Chloropicrin 98%+2%w/w,Titan-GA -gaz,الاشراق للزراعه والتجارة,98% W/W,CHANGYI CITY CHEMical plant,31/12/2028
+1233,Methyl Bromid +Chloropicrin,Meta brom- GAS,شركه جعفر الكردي وشركاه,98% + 2% W/V,Bromine Compounds LTD,31/3/2022
+2154000,Boric Acid,Rok Rok-47%,مؤسسة صالح الزيود لمبيدات الصحة العامه,47% W/W,ريك روك للمبيدات الحشريه المصريه,27/7/2020
+1308,dazomet 98% w/w,dacron-98% GR,مصانع الادوية البيطرية والزراعية,98% W/W,VAPCO,12/9/2025
+2228,Metam Potassium,Tamifume-K 690(LA),سيجال للمواد الزراعيه,69% W/V,TAMAINICO,30/11/2026
+4434,Metam Potassium+,Raisan K,مؤسسة الأرض الخضراء,57.3% w/v+,,30/11/2025
+4772,Pyrifluquinazon+,Rycar 20% WDG,شركة الاشراق للزراعة والتجارة,20%W/W+,,14/04/2030
+3659,Clofentezine,Pluot -50% SC,مؤسسة الارض الخضراء للخدمات الزراعية,50% W/V,Nantong Baoye Chemical Co.LTD/ Flagchem International Co.ltd,30/7/2025
+4100,Clofentezine,EXCLAR,مجمع استرا الصناعي للاسمدة والمبيدات,50% w/v,Astranova TAR.tic .vesan A.s,10/12/2027
+4240,Clofentezine,Creed SC,الشركة العربية لصناعة المبيدات/مبيدكو,50%w/v,الشركة العربية لصناعة المبيدات/مبيدكو,غير منتهي
+2876,Clofentezine 20% w/w,Clofen 20 SC,مؤسسه ارشاد الزراعيه,20%W/V,JIANGSU BAOLING CHEM. CO. LTD/KING TECH CORP.,24/01/2017
+4051,Clofentezine,Vertex-50% sc,مؤسسة صناعات الكيماويات الزراعية,50% w/v,ACI,غير منتهيه
+3717,Clofentezine,Sinoclof-50% SC,شركة النشامى الزراعية,50% W/V,Nantong Baoye Chemical Company LTD/Sino Agro-Chemical Industry LTD,30/7/2025
+3597,Clofentezine,Clozine-50%,ارض الصنوبر,50% W/W,Nantong Baoyo Chemical Co.LTD/Hangzhou Leaflife Chemicals Co. LTD,29/7/2030
+3485,Clofentezine 50%W/V,Arzclofen-50% SC,شركه الارز الزراعيه,50% W/V,"Nantong Baoye Chemical Co.,LTD/Shanghai MIO Chemical Co.,LTD",30/07/2020
+3347,Clofentezine 50% w/v,Lybeer_50% SC,شركة القدرة الزراعية لتجارة المواد الزراعية,50% w/v,Hektas,11/5/2026
+694,Hexythiazox,Nissorun -10%WP,الاشراق للزراعه والتجارة,10% W/W,NIPPON SODA/MITSUI,23/09/2026
+4317,Hexythiazox,Superhexy,شركة النخبة لصناعة الاسمدة الزراعية,10%W/V,NOVAC,غير منتهي
+2290,Hexythiazox,Sorun -5%EC,المدار لتجارة المواد الزراعية,5% W/W,JIANGSU KESHENG GROUP CO.LTD/ ZHENJIANG AGREEN cO.LTD,7/1/2028
+4309,Hexythiazox,Pro - Star 10%WP,مصنع الهلال الخصيب لإنتاج الأدوية البيطرية والزراعية,10%W/V,Provam,غير منتهي
+3865,Hexythiazox-5% W/V,Sinozox-5% EC,شركة النشامى الزراعية,5%w/v,Zhejiang welldone chemical co.LTd.,27/11/2027
+3987,Abamectin + Hexythiazox,Rocinante SC,شركة نبات للزراعة والتجارة,1.8% +5% (w/v),Proplan Plant protection,31/5/2025
+4039,Hexythiazox,Hexa-Nor 5% EC,مؤسسة حمودة للزراعة والبيطرة,5% w/w,Hailair pesticide and chemical Co.ltd,17/12/2023
+2094,Hexythiazox-10% W/W,Ferthiazox-10% WP,عبدالحافظ الزراعية,10% W/W,FERTIAGRO PTE LTD,16/2/2030
+4644,Hexythiazox+,Diablo 10% WP,مؤسسة الوفق الزراعية,10%w/w+,,31/05/2025
+2094,Hexythiazox-10% W/W,Ferthiazox-10% WP,عبدالحافظ الزراعية,10% W/W,FERTIAGRO PTE LTD,16/02/2020
+3639,Etoxazole,Novamite-11% SC,مجمع استراالصناعي,11% W/V,Astranova,9/5/2026
+3630,Etoxazole,Toxamite -11% SC,القوافل الصناعية الزراعية,11% W/V,Al-qwafel,غير منتهي
+3642,Etoxazole,Detox-34.5% SC,مؤسسة صناعات الكيماويات الزراعية,34.5% W/V,مؤسسة صناعات الكيماويات الزراعية,غير منتهي
+3791,Etoxazole,Montex-10% SC,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,10% W/V,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,28/2/2024
+4113,Etoxazole,Bang 20%,شركة جعفر الكردي وشركاه,20% w/w,Shandong Lvshi Pesticide co.ltd,30/5/2026
+4334,Etoxazole 11%W/V,Arzmite SC,شركة الارز الزراعية,11%W/V,Shanghai Shengnong Pesticide Co.LTD.,25/4/2026
+3880,Etoxazole 30%sc,Etomite,شركة الدائرة الخضراء الزراعية,30%,Shaanxi Sunger Road bio-science co.ltd.,19/12/2022
+3437,Etoxazole 11% w/v,Sorado-11%SC,سيجال للموادالزراعية,11% W/V,Agriscience LTD,12/04/2028
+0,Diafenthiuron-50% W/V,Pegasus-50% SC,شركة الاتحاد الزراعي,,,
+4341,diafenthiuron,pascale,مؤسسة صناعات الكيماويات الزراعية,50%w/v,مؤسسة صناعات الكيماويات الزراعية,غير منتهي
+4341,Diafenthiuron,Pascale,مؤسسة صناعات الكيماويات الزراعية,50%w/v,مؤسسة صناعات الكيماويات الزراعية,غير منتهي
+4611,Diafenthiuron+,Ampere 50%,قطفة الزراعية,50%W/V+,,13/02/2027
+4537,Diafenthiuron+Cyantraniliprole+,Pascale Pro,مؤسسة صناعات الكيماويات الزراعية/ سلامة الحياري,40%W/V+8%W/V+,مؤسسة صناعات الكيماويات الزراعية,20/02/2029
+4610,Diafenthiuron+Prallethrin+pyperonil Butoxide (PBO)+,HELITRIN DESCARGA TOTAL,شركة الذهب الاخضر,0.3 % W/W+0.1 % W/W+1.0 % W/W+,,21/05/2029
+1007,Tetradifon 8%w/v,Acimit EC,مؤسسة صناعات الكيماويات الزراعيه,8%W/V,ACI,30/06/2025
+4686,Thiocyclam Hyarogenoxalate+,Kemtict 50% WP,الشركة الأردنية لإنتاج المبيدات الحشرية والعلاجات الزراعية,50% w/w+,الشركة الاردنية لانتاج المبيدات الحشرية والعلاجات الزراعية,17/10/2029
+4196,Thiocyclam Hydrogen Oxalate,Thiosect 50%WP,اريزونا المتحدة للصناعات البتروكيماوية,50%W/W,اريزونا المتحدة للصناعات البتروكيماوية,غير منتهي
+4216,Thiocyclam hydrogen Oxalate,Sektor 50% WP,اليمامة لصناعة المواد الزراعية,50%w,اليمامة لصناعة المواد الزراعية,غير منتهي
+3993,Thiocyclam Hyarogenoxalate,King's Tank 50% SP,شركة زهران للمواد الزراعية,50% w/w,Jiangsu Tianrong Group Co.Ltd,24/7/2023
+2968,Thiocyclam 50%W/W,Evisect -WP,المواد الزراعيه(مقدادي),50% W/W,Nippon Kayaku Co LTD/Arysta Lifescience Corporation,18/3/2030
+4372,Chlorfluazuron+,Best Leaf,قطفة الزراعية,5%w/v+,-,17/12/2023
+1731,Diflubenzuron-25% W/W,Acilin-25% WP,مؤسسةصناعات الكيماوياتالزراعية,25% W/W,ACI,10/4/2030
+1883,Diflubenzuron 25%w/w,Demolt WP,مدماك لانتاج الاسمده والادوية الزراعية والبيطرية,25% W/W,MEDMAC,غير منتهيه
+1909,Diflubenzuron 25%w/w,Patron-25 %WP,مصانع الادويه البيطريه والزراعيه(فابكو),25% W/W,VAPCO,غير منتهيه
+2041,Diflubenzuron,Diflorate -25 % WP,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو),25% W/W,الشركة العربية لصناعة المبيدات والادوية البيطرية (مبيدكو),19/5/2029
+2405,Diflubenzuron 25%w/w,Diflokill -25% WP,العربية لصناعة المبيدات والأدوية البيطرية (مبيدكو),25% W/W,MOBEDCO,غير منتهي
+2185,Diflubenzuron 6% w/v,Patron ULV,شركة مصانع الادوية البيطرية والزراعية فابكو,6% ULV,VAPCO,10/08/2025
+3178,Diflubenzuron,Tuta -25% SC,مؤسسه صناعات الكيماويات الزراعيه,25% W/V,مؤسسه صناعات الكيماويات الزراعيه,24/11/2028
+2348,Diflubenzuron 25%w/w,Vekon-25% WP,مؤسسه كريستال للزراعه والتجارة,25% W/W,"CASS-IPP,langfang Pesticide Testing Factory /Zhenjiang Agreen Co,LTD",13/06/2017
+3072,Diflubenzuron,Diflin -25% WP,شركة جهاد ياسين الزراعية,25%W/W,JIANGYIN SULI CHENICAL CO.LTD/ Golden Harvest Chemical Co.LTD,19/2/2023
+3594,Diflubenzuron,Affluron- 48% SC,شركة العلوم لصناعة الأدوية والأسمدة الزراعية,48% W/V,Agriscience LTD,22/12/2026
+2097,Flufenoxuron,Floxate-10% DC,الشركة العربية لصناعة المبيدات والادوية البطرية /مبيدكو,2097,الشركة العربية لصناعة المبيدات والادوية البطرية /مبيدكو,30/6/2029
+2097,Flufenoxuron,Floxate-%10 DC,الشركة العربيه لصناعه المبيدات والادويه البيطرية / مبيدكو,10% W/V,الشركة العربيه لصناعه المبيدات والادويه البيطرية / مبيدكو,30/6/2024
+3304,Flufenoxuron,Flucide-10%EC,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,10%W/V,الشركة المتقدمة لصناعة المبيدات الزراعية والعلاجات البيطرية,14/11/2028
+4351,Indoxacarb+Novaluron8%w/v,Magenta,مؤسسة صناعات الكيماويات الزراعية,32%+8% W/V,مؤسسة صناعات الكيماويات الزراعية,غير منتهي
+
+`;
+        // تحميل البيانات من ملف CSV مع fallback
+        async function loadCSVData() {
+            try {
+                // محاولة تحميل من الملف أولاً
+                const response = await fetch('pesticides_results.csv');
+                if (response.ok) {
+                    const csvText = await response.text();
+                    data = parseCSV(csvText);
+                    console.log(`تم تحميل ${data.length} سجل من الملف بنجاح`);
+                } else {
+                    throw new Error('الملف غير موجود');
+                }
+            } catch (error) {
+                console.log('استخدام البيانات الاحتياطية:', error.message);
+                // استخدام البيانات الاحتياطية
+                data = parseCSV(fallbackData);
+                console.log(`تم تحميل ${data.length} سجل من البيانات الاحتياطية`);
+            }
+            
+            displayData(data);
+        }
+
+        // نحول CSV إلى Array of Objects
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',');
+            return lines.slice(1).map(line => {
+                const values = line.split(',');
+                let obj = {};
+                headers.forEach((h, i) => obj[h] = values[i]);
+                return obj;
+            }).filter(row => row.registrationNo && row.registrationNo.trim() !== ''); // إزالة الصفوف الفارغة
+        }
+
+        // فحص الكلمات المحددة
+        function checkWarningKeywords(searchTerm) {
+            const lowerSearchTerm = searchTerm.toLowerCase();
+            const matchedKeywords = warningKeywords.filter(keyword => 
+                lowerSearchTerm.includes(keyword.toLowerCase())
+            );
+            
+            const warningAlert = document.getElementById('warningAlert');
+            
+            if (matchedKeywords.length > 0) {
+                warningAlert.classList.add('show');
+                console.log(`تحذير: تم العثور على كلمات محددة: ${matchedKeywords.join(', ')}`);
+            } else {
+                warningAlert.classList.remove('show');
+            }
+        }
+
+        // عرض Modal للوصف السريع
+        function showDrugModal(drugData) {
+            const modal = new bootstrap.Modal(document.getElementById('drugModal'));
+            const modalBody = document.getElementById('modalBody');
+            const modalTitle = document.getElementById('drugModalLabel');
+            const pdfLink = document.getElementById('modalPdfLink');
+            
+            // البحث عن وصف الدواء
+            let drugInfo = null;
+            const commonName = drugData.commonName.toLowerCase();
+            
+            for (const [key, info] of Object.entries(drugDescriptions)) {
+                if (commonName.includes(key.toLowerCase())) {
+                    drugInfo = info;
+                    break;
+                }
+            }
+            
+            // تحديث عنوان Modal
+            modalTitle.innerHTML = `<i class="fas fa-pills me-2"></i>${drugData.commonName}`;
+            
+            // تحديث رابط PDF
+            pdfLink.href = `https://dms.moa.gov.jo/PesticidesFiles/${drugData.registrationNo}.pdf`;
+            
+            // إنشاء محتوى Modal
+            let modalContent = `
+                <div class="drug-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>معلومات أساسية</h6>
+                    <p><strong>رقم التسجيل:</strong> ${drugData.registrationNo}</p>
+                    <p><strong>الاسم التجاري:</strong> ${drugData.tradeName}</p>
+                    <p><strong>الشركة المصنعة:</strong> ${drugData.company}</p>
+                    <p><strong>تاريخ الانتهاء:</strong> ${drugData.expiry}</p>
+                </div>
+            `;
+            
+            if (drugInfo) {
+                modalContent += `
+                    <div class="drug-description">
+                        <h6><i class="fas fa-book-medical me-2"></i>الوصف السريع</h6>
+                        <p><strong>الاسم العلمي:</strong> ${drugInfo.name}</p>
+                        <p><strong>النوع:</strong> ${drugInfo.type}</p>
+                        <p><strong>الوصف:</strong> ${drugInfo.description}</p>
+                        <p><strong>الاستخدامات:</strong> ${drugInfo.uses}</p>
+                        <p><strong>السلامة:</strong> ${drugInfo.safety}</p>
+                    </div>
+                `;
+            } else {
+                modalContent += `
+                    <div class="drug-description">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>ملاحظة</h6>
+                        <p>لا تتوفر معلومات وصفية سريعة لهذا الدواء حالياً. يرجى مراجعة الملف PDF للحصول على معلومات مفصلة.</p>
+                    </div>
+                `;
+            }
+            
+            modalBody.innerHTML = modalContent;
+            modal.show();
+        }
+
+        // عرض البيانات
+        function displayData(filteredData, highlight='') {
+            const table = document.getElementById('dataTable');
+            table.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="loading">
+                            <i class="fas fa-search text-muted"></i>
+                            لا توجد نتائج للبحث
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            filteredData.forEach(row => {
+                const pdfLink = `https://dms.moa.gov.jo/PesticidesFiles/${row.registrationNo}.pdf`;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td onclick="showDrugModal(${JSON.stringify(row).replace(/"/g, '&quot;')})">${highlightText(row.registrationNo, highlight)}</td>
+                    <td onclick="showDrugModal(${JSON.stringify(row).replace(/"/g, '&quot;')})">${highlightText(row.commonName, highlight)}</td>
+                    <td onclick="showDrugModal(${JSON.stringify(row).replace(/"/g, '&quot;')})">${highlightText(row.tradeName, highlight)}</td>
+                    <td onclick="showDrugModal(${JSON.stringify(row).replace(/"/g, '&quot;')})">${highlightText(row.localName, highlight)}</td>
+                    <td onclick="showDrugModal(${JSON.stringify(row).replace(/"/g, '&quot;')})">${highlightText(row.ai, highlight)}</td>
+                    <td onclick="showDrugModal(${JSON.stringify(row).replace(/"/g, '&quot;')})">${highlightText(row.company, highlight)}</td>
+                    <td onclick="showDrugModal(${JSON.stringify(row).replace(/"/g, '&quot;')})">${highlightText(row.expiry, highlight)}</td>
+                    <td><a href="${pdfLink}" target="_blank" class="btn btn-primary btn-sm">
+                        <i class="fas fa-file-pdf me-1"></i>فتح PDF
+                    </a></td>
+                `;
+                table.appendChild(tr);
+            });
+        }
+
+        // تمييز النص
+        function highlightText(text, term) {
+            if(!term || !text) return text || '';
+            const regex = new RegExp(`(${term})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+
+        // فلترة حسب الكلمة
+        function filterData() {
+            const keywordVal = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            // فحص الكلمات المحددة
+            checkWarningKeywords(keywordVal);
+            
+            if (!keywordVal) {
+                displayData(data);
+                return;
+            }
+
+            const keywords = keywordVal.split(/\s+/);
+            const filtered = data.filter(row => {
+                const combined = Object.values(row).join(' ').toLowerCase();
+                return keywords.every(kw => combined.includes(kw));
+            });
+
+            displayData(filtered, keywordVal);
+        }
+
+        // autocomplete محسن
+const input = document.getElementById('searchInput');
+const autocompleteList = document.getElementById('autocomplete-list');
+
+function showAutocomplete(val = '', fromFocus = false) {
+    autocompleteList.innerHTML = '';
+    
+    checkWarningKeywords(val);
+
+    let matches = [];
+
+    if (fromFocus && !val) {
+        // عند الضغط فقط (عرض قائمة allKeywords)
+        matches = allKeywords.slice(0, 30); // بتقدر تشيل limit لو بدك كلهم
+    } else {
+        // عند الكتابة (فلترة بالكل)
+        const keywordMatches = allKeywords.filter(keyword => 
+            keyword.toLowerCase().includes(val)
+        );
+
+        const dataMatches = data.filter(row => 
+            Object.values(row).some(v => v && v.toLowerCase().includes(val))
+        ).slice(0, 20);
+
+        matches = [...keywordMatches, ...dataMatches];
+    }
+
+    matches.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('autocomplete-item');
+
+        const isWarningKeyword = warningKeywords.includes(
+            (typeof item === 'string' ? item.toLowerCase() : item.commonName?.toLowerCase())
+        );
+
+        if (isWarningKeyword) {
+            itemDiv.classList.add('warning');
+            itemDiv.innerHTML = `
+                <strong>${typeof item === 'string' ? item : item.commonName}</strong>
+                <i class="fas fa-exclamation-triangle warning-icon"></i>
+                <span style="color: #666; font-size: 0.9em;">(تحذير: معلومات محدودة)</span>
+            `;
+        } else if (typeof item === 'string') {
+            itemDiv.innerHTML = `<strong>${item}</strong>`;
+        } else {
+            itemDiv.innerHTML = `<strong>${item.registrationNo}</strong> - ${item.commonName}`;
+        }
+
+        itemDiv.addEventListener('click', function() {
+            if (typeof item === 'string') {
+                input.value = item;
+            } else {
+                input.value = item.registrationNo;
+            }
+            autocompleteList.innerHTML = '';
+            filterData();
+        });
+
+        autocompleteList.appendChild(itemDiv);
+    });
+}
+
+// عند الكتابة (يبحث بالكل)
+input.addEventListener('input', function() {
+    showAutocomplete(this.value.toLowerCase(), false);
+});
+
+// عند التركيز (يظهر قائمة allKeywords فقط)
+input.addEventListener('focus', function() {
+    showAutocomplete(this.value.toLowerCase(), true);
+});
+
+// اغلاق القائمة عند النقر خارجها
+document.addEventListener('click', function(e) {
+    if (e.target !== input) {
+        autocompleteList.innerHTML = '';
+    }
+});
+
+
+        // تحميل البيانات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', loadCSVData);
+    </script>
+</body>
+</html>
